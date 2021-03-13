@@ -11,7 +11,7 @@ export interface ObserverProps<T extends ObservableBag> {
     /**
      * Strongly-typed React children for functional child smartness
      */
-    children: (values: UnpackedObservableBag<T>) => JSX.Element;
+    children: (values: UnpackedObservableBag<T>) => JSX.Element | JSX.Element[];
     observed: T;
 }
 
@@ -51,5 +51,5 @@ export function Observer<T extends ObservableBag>({
             );
     }, []);
 
-    return children(observedValues);
+    return <>{children(observedValues)}</>;
 }
