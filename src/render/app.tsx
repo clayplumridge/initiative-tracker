@@ -7,6 +7,7 @@ import {
 } from "@material-ui/core";
 import * as React from "react";
 import { theme } from "@/render/theme";
+import { EncounterView } from "./views/Encounter";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -30,7 +31,9 @@ export default function App() {
                     flexDirection="column"
                     flexGrow={1}
                     p={1}
-                ></Box>
+                >
+                    <EncounterView />
+                </Box>
             </Box>
         </ThemeProvider>
     );

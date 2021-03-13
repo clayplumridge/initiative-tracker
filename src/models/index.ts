@@ -1,0 +1,52 @@
+import { match } from "ts-pattern";
+
+export interface ActorTemplate {
+    actorType: ActorType;
+    initiativeModifier: number;
+    name: string;
+}
+
+export const enum ActorType {
+    NPC = 2,
+    PC = 1
+}
+
+interface ActorBase {
+    actorType: ActorType;
+    id: string;
+    initiative?: number;
+    template: ActorTemplate;
+}
+
+interface NpcActor extends ActorBase {
+    actorType: ActorType.NPC;
+}
+
+interface PlayerActor extends ActorBase {
+    actorType: ActorType.PC;
+}
+
+export type Actor = PlayerActor | NpcActor;
+
+export function createActor(template: ActorTemplate): Actor {
+    return match(template)
+        .with({ actorType: ActorType.NPC }, res => createNpc(res))
+        .with({ actorType: ActorType.PC }, res => createPc(res))
+        .run();
+}
+
+function createNpc(template: ActorTemplate): Actor {
+    return {
+        actorType: template.actorType,
+        id: "asdf-npc",
+        template: template
+    };
+}
+
+function createPc(template: ActorTemplate): Actor {
+    return {
+        actorType: template.actorType,
+        id: "asdf-pc",
+        template: template
+    };
+}
