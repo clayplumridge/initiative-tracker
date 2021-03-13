@@ -1,0 +1,38 @@
+{
+    "name": "initiative-tracker",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "build": "webpack",
+        "react:dev": "webpack serve --mode=development",
+        "electron:dev": "nodemon",
+        "dev": "concurrently --kill-others \"npm run react:dev\" \"npm run electron:dev\"",
+        "start": "npm run build && electron dist/main.js"
+    },
+    "keywords": [],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {
+        "@types/react": "^17.0.2",
+        "@types/react-dom": "^17.0.1",
+        "concurrently": "^5.3.0",
+        "electron-is-dev": "^1.2.0",
+        "html-webpack-plugin": "^5.1.0",
+        "nodemon": "^2.0.7",
+        "ts-loader": "^8.0.17",
+        "typescript": "^4.1.5",
+        "webpack": "^5.21.2",
+        "webpack-cli": "^4.5.0",
+        "webpack-dev-server": "^3.11.2"
+    },
+    "dependencies": {
+        "@material-ui/core": "^4.11.3",
+        "@material-ui/icons": "^4.11.2",
+        "@material-ui/lab": "^4.0.0-alpha.57",
+        "electron": "^11.2.3",
+        "react": "^17.0.1",
+        "react-dom": "^17.0.1",
+        "ts-pattern": "^2.1.2"
+    }
+}
