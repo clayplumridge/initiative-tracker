@@ -1,6 +1,7 @@
 import {
     Box,
     Button,
+    ClickAwayListener,
     createStyles,
     makeStyles,
     Paper,
@@ -16,7 +17,8 @@ import { Encounter } from "@/render/state/Encounter";
 import * as React from "react";
 import { Observer } from "@/render/components/Observer";
 import { Actor, ActorType, createActor, NpcActor, PlayerActor } from "@/models";
-import { IObservableValue } from "../core/Observable";
+import { IObservableValue } from "@/render/core/Observable";
+import { IReadonlyObservableValue } from "@/render/core/Observable";
 
 const encounter: Encounter = new Encounter();
 
@@ -68,6 +70,7 @@ export const EncounterView: React.FC<{}> = () => {
             >
                 Start Encounter
             </Button>
+
             <Button
                 className={styles.startEncounterButton}
                 onClick={() => encounter.startEncounter(true)}
@@ -91,6 +94,8 @@ const ActorRow: React.FC<{ actor: IObservableValue<Actor> }> = ({ actor }) => {
             return <PlayerRow actor={actor as IObservableValue<PlayerActor>} />;
         case ActorType.NPC:
             return <NpcRow actor={actor as IObservableValue<NpcActor>} />;
+        default:
+            return null;
     }
 };
 
@@ -108,14 +113,48 @@ const PlayerRow: React.FC<{ actor: IObservableValue<PlayerActor> }> = ({
     );
 };
 
-const NpcRow: React.FC<{ actor: IObservableValue<NpcActor> }> = ({ actor }) => {
+const NpcRow: React.FC<{ actor: IReadonlyObservableValue<NpcActor> }> = ({
+    actor
+}) => {
     const { initiative, template } = actor.value;
     const name = `TODO ${template.name}`;
 
     return (
-        <TableRow>
-            <TableCell>{name}</TableCell>
-            <TableCell>{initiative}</TableCell>
-        </TableRow>
+        <Observer observed={{ actor }}>
+            {({ actor }) => (
+                <TableRow>
+                    <EditableTextCell
+                        onChange={val => encounter.updateActor({ ...actor })}
+                        onCommit={() => true}
+                        value={name}
+                    />
+                    <TableCell>{initiative}</TableCell>
+                </TableRow>
+            )}
+        </Observer>
+    );
+};
+
+export const EditableTextCell: React.FC<{
+    onChange: (val: string) => void;
+    onCommit: (val: string) => boolean;
+    value: string;
+}> = ({ value, onChange, onCommit }) => {
+    const [isEditable, setIsEditable] = React.useState(false);
+
+    const onClickAway = () => {
+        const commitResult = onCommit(value);
+
+        if (commitResult) {
+            setIsEditable(false);
+        }
+    };
+
+    return (
+        <ClickAwayListener onClickAway={onClickAway}>
+            <TableCell onClick={() => setIsEditable(true)}>
+                {isEditable ? <div>Edit Mode YOLO</div> : value}
+            </TableCell>
+        </ClickAwayListener>
     );
 };
