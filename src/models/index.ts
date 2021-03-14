@@ -1,5 +1,4 @@
 import { match } from "ts-pattern";
-
 export interface ActorTemplate {
     actorType: ActorType;
     initiativeModifier: number;
@@ -18,11 +17,11 @@ interface ActorBase {
     template: ActorTemplate;
 }
 
-interface NpcActor extends ActorBase {
+export interface NpcActor extends ActorBase {
     actorType: ActorType.NPC;
 }
 
-interface PlayerActor extends ActorBase {
+export interface PlayerActor extends ActorBase {
     actorType: ActorType.PC;
 }
 

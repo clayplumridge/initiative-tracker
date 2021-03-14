@@ -1,8 +1,21 @@
-import { Box } from "@material-ui/core";
+import {
+    Box,
+    Button,
+    createStyles,
+    makeStyles,
+    Paper,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableHead,
+    TableRow,
+    Typography
+} from "@material-ui/core";
 import { Encounter } from "@/render/state/Encounter";
 import * as React from "react";
 import { Observer } from "@/render/components/Observer";
-import { ActorType, createActor } from "@/models";
+import { Actor, ActorType, createActor, NpcActor, PlayerActor } from "@/models";
 
 const encounter: Encounter = new Encounter();
 
@@ -17,12 +30,76 @@ encounter.addActor(
     })
 );
 
+const useStyles = makeStyles(theme =>
+    createStyles({
+        startEncounterButton: {
+            marginTop: "auto"
+        }
+    })
+);
+
 export const EncounterView: React.FC<{}> = () => {
+    const styles = useStyles();
+
     return (
-        <Box display="flex" flexDirection="column" flexGrow={1} p={1}>
-            <Observer observed={{ actors: encounter.getActors() }}>
-                {({ actors }) => actors.map(actor => <div>{actor.id}</div>)}
-            </Observer>
-        </Box>
+        <Paper>
+            <TableContainer>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            <TableCell>Name</TableCell>
+                            <TableCell>Initiative</TableCell>
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
+                        <Observer observed={{ actors: encounter.getActors() }}>
+                            {({ actors }) =>
+                                actors.map(actor => <ActorRow actor={actor} />)
+                            }
+                        </Observer>
+                    </TableBody>
+                </Table>
+            </TableContainer>
+
+            <Button
+                className={styles.startEncounterButton}
+                onClick={() => encounter.startEncounter()}
+            >
+                Start Encounter
+            </Button>
+        </Paper>
+    );
+};
+
+const ActorRow: React.FC<{ actor: Actor }> = ({ actor }) => {
+    switch (actor.actorType) {
+        case ActorType.PC:
+            return <PlayerRow actor={actor} />;
+        case ActorType.NPC:
+            return <NpcRow actor={actor} />;
+    }
+};
+
+const PlayerRow: React.FC<{ actor: PlayerActor }> = ({ actor }) => {
+    const { initiative, template } = actor;
+    const name = `TODO ${template.name}`;
+
+    return (
+        <TableRow>
+            <TableCell>{name}</TableCell>
+            <TableCell>{initiative}</TableCell>
+        </TableRow>
+    );
+};
+
+const NpcRow: React.FC<{ actor: NpcActor }> = ({ actor }) => {
+    const { initiative, template } = actor;
+    const name = `TODO ${template.name}`;
+
+    return (
+        <TableRow>
+            <TableCell>{name}</TableCell>
+            <TableCell>{initiative}</TableCell>
+        </TableRow>
     );
 };
