@@ -20,7 +20,26 @@ export class Encounter {
     }
 
     public addActor(actor: Actor) {
+        if (!actor.template.uniqueName) {
+            const count = this.actors.value.filter(
+                ({ value }) => value.template.id == actor.template.id
+            ).length;
+            actor = { ...actor, name: `${actor.template.name} ${count + 1}` };
+        }
+
         this.actors.push(new ObservableValue(actor));
+    }
+
+    public updateActor(actor: Actor) {
+        const actorToUpdate = this.actors.value.find(
+            x => x.value.id == actor.id
+        );
+
+        if (actorToUpdate) {
+            actorToUpdate.value = actor;
+        } else {
+            console.error("O no");
+        }
     }
 
     public startEncounter(forceRestart?: boolean): void {
@@ -37,7 +56,7 @@ export class Encounter {
         this.sortByInitiative();
     }
 
-    public sortByInitiative(initiativeActors?: ReadonlyArray<Actor>): void {
+    public sortByInitiative(): void {
         this.actors.value = [...this.actors.value].sort(
             (actor1, actor2) =>
                 (actor1.value.initiative || -1) -

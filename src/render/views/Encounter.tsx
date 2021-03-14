@@ -11,6 +11,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
+    TextField,
     Typography
 } from "@material-ui/core";
 import { Encounter } from "@/render/state/Encounter";
@@ -23,13 +24,22 @@ import { IReadonlyObservableValue } from "@/render/core/Observable";
 const encounter: Encounter = new Encounter();
 
 encounter.addActor(
-    createActor({ name: "pc", actorType: ActorType.PC, initiativeModifier: 1 })
+    createActor({
+        name: "pc",
+        actorType: ActorType.PC,
+        initiativeModifier: 1,
+        id: 0,
+        uniqueName: true
+    })
 );
+
 encounter.addActor(
     createActor({
         name: "npc",
         actorType: ActorType.NPC,
-        initiativeModifier: 2
+        initiativeModifier: 2,
+        id: 1,
+        uniqueName: false
     })
 );
 
@@ -99,14 +109,24 @@ const ActorRow: React.FC<{ actor: IObservableValue<Actor> }> = ({ actor }) => {
     }
 };
 
+const useRowStyles = makeStyles(theme =>
+    createStyles({
+        row: {
+            minHeight: 81
+        }
+    })
+);
+
 const PlayerRow: React.FC<{ actor: IObservableValue<PlayerActor> }> = ({
     actor
 }) => {
     const { initiative, template } = actor.value;
     const name = `TODO ${template.name}`;
 
+    const styles = useRowStyles();
+
     return (
-        <TableRow>
+        <TableRow className={styles.row}>
             <TableCell>{name}</TableCell>
             <TableCell>{initiative}</TableCell>
         </TableRow>
@@ -116,19 +136,21 @@ const PlayerRow: React.FC<{ actor: IObservableValue<PlayerActor> }> = ({
 const NpcRow: React.FC<{ actor: IReadonlyObservableValue<NpcActor> }> = ({
     actor
 }) => {
-    const { initiative, template } = actor.value;
-    const name = `TODO ${template.name}`;
+    const styles = useRowStyles();
 
     return (
-        <Observer observed={{ actor }}>
-            {({ actor }) => (
-                <TableRow>
+        <Observer observed={{ actorInt: actor }}>
+            {({ actorInt }) => (
+                <TableRow className={styles.row}>
                     <EditableTextCell
-                        onChange={val => encounter.updateActor({ ...actor })}
+                        label={"Name"}
+                        onChange={val =>
+                            encounter.updateActor({ ...actorInt, name: val })
+                        }
                         onCommit={() => true}
-                        value={name}
+                        value={actorInt.name}
                     />
-                    <TableCell>{initiative}</TableCell>
+                    <TableCell>{actorInt.initiative}</TableCell>
                 </TableRow>
             )}
         </Observer>
@@ -136,10 +158,11 @@ const NpcRow: React.FC<{ actor: IReadonlyObservableValue<NpcActor> }> = ({
 };
 
 export const EditableTextCell: React.FC<{
+    label?: string;
     onChange: (val: string) => void;
     onCommit: (val: string) => boolean;
     value: string;
-}> = ({ value, onChange, onCommit }) => {
+}> = ({ value, label, onChange, onCommit }) => {
     const [isEditable, setIsEditable] = React.useState(false);
 
     const onClickAway = () => {
@@ -153,7 +176,18 @@ export const EditableTextCell: React.FC<{
     return (
         <ClickAwayListener onClickAway={onClickAway}>
             <TableCell onClick={() => setIsEditable(true)}>
-                {isEditable ? <div>Edit Mode YOLO</div> : value}
+                {isEditable ? (
+                    <TextField
+                        label={label}
+                        onChange={ev => {
+                            console.log(ev.target.value);
+                            onChange(ev.target.value);
+                        }}
+                        value={value}
+                    />
+                ) : (
+                    value
+                )}
             </TableCell>
         </ClickAwayListener>
     );

@@ -1,8 +1,10 @@
 import { match } from "ts-pattern";
 export interface ActorTemplate {
     actorType: ActorType;
+    id: number;
     initiativeModifier: number;
     name: string;
+    uniqueName: boolean;
 }
 
 export const enum ActorType {
@@ -14,6 +16,7 @@ interface ActorBase {
     actorType: ActorType;
     id: string;
     initiative?: number;
+    name: string;
     template: ActorTemplate;
 }
 
@@ -38,6 +41,7 @@ function createNpc(template: ActorTemplate): Actor {
     return {
         actorType: template.actorType,
         id: "asdf-npc",
+        name: template.name,
         template: template
     };
 }
@@ -46,6 +50,7 @@ function createPc(template: ActorTemplate): Actor {
     return {
         actorType: template.actorType,
         id: "asdf-pc",
+        name: template.name,
         template: template
     };
 }
