@@ -4,6 +4,8 @@ import {
     ClickAwayListener,
     createStyles,
     makeStyles,
+    Menu,
+    MenuItem,
     Paper,
     Table,
     TableBody,
@@ -54,6 +56,37 @@ const useStyles = makeStyles(theme =>
 export const EncounterView: React.FC<{}> = () => {
     const styles = useStyles();
 
+    const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+    const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+        setAnchorEl(event.currentTarget);
+    };
+
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+
+    const addPlayer = () => {
+        encounter.addActor(
+            createActor({
+                name: "pc",
+                actorType: ActorType.PC,
+                initiativeModifier: 1
+            })
+        );
+        handleClose();
+    };
+
+    const addNpc = () => {
+        encounter.addActor(
+            createActor({
+                name: "npc",
+                actorType: ActorType.NPC,
+                initiativeModifier: 2
+            })
+        );
+        handleClose();
+    };
+
     return (
         <Paper>
             <TableContainer>
@@ -94,6 +127,24 @@ export const EncounterView: React.FC<{}> = () => {
             >
                 Sort By Initiative
             </Button>
+            <Button
+                aria-controls="simple-menu"
+                aria-haspopup="true"
+                onClick={handleClick}
+            >
+                Add Player or Monster
+            </Button>
+            <Menu
+                id="simple-menu"
+                anchorEl={anchorEl}
+                keepMounted
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
+            >
+                <MenuItem onClick={addPlayer}>Add Player</MenuItem>
+                <MenuItem onClick={addNpc}>Add Monster</MenuItem>
+                <MenuItem onClick={handleClose}>Add Freehand Monster</MenuItem>
+            </Menu>
         </Paper>
     );
 };
