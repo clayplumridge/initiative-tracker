@@ -1,7 +1,9 @@
 import { match } from "ts-pattern";
+import { v4 } from "uuid";
+
 export interface ActorTemplate {
     actorType: ActorType;
-    id: number;
+    id: string;
     initiativeModifier: number;
     name: string;
     uniqueName: boolean;
@@ -40,7 +42,7 @@ export function createActor(template: ActorTemplate): Actor {
 function createNpc(template: ActorTemplate): Actor {
     return {
         actorType: template.actorType,
-        id: "asdf-npc",
+        id: v4(),
         name: template.name,
         template: template
     };
@@ -49,7 +51,7 @@ function createNpc(template: ActorTemplate): Actor {
 function createPc(template: ActorTemplate): Actor {
     return {
         actorType: template.actorType,
-        id: "asdf-pc",
+        id: v4(),
         name: template.name,
         template: template
     };
