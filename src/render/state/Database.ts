@@ -5,7 +5,7 @@ import { Encounter, EncounterData } from "@/render/state/Encounter";
 
 const dataFile: string = "db.json";
 const adapter: AdapterSync<Schema> = new FileSync<Schema>(dataFile);
-const db: LowdbSync<any> = low(adapter);
+const db = low(adapter);
 
 interface Schema {
     actorTemplates: Array<ActorTemplate>;
@@ -47,7 +47,7 @@ export class Database {
     }
 
     public getEncounter(encounterId: string): EncounterData {
-        return db.get("encounters").find({ id: encounterId }).write();
+        return db.get("encounters").find({ id: encounterId }).value();
     }
 
     public removeEncounter(encounterId: string): void {
