@@ -18,6 +18,7 @@ import {
 } from "@material-ui/core";
 import { Encounter } from "@/render/state/Encounter";
 import * as React from "react";
+import { v4 as uuidv4 } from "uuid";
 import { Observer } from "@/render/components/Observer";
 import { Actor, ActorType, createActor, NpcActor, PlayerActor } from "@/models";
 import { IObservableValue } from "@/render/core/Observable";
@@ -51,7 +52,7 @@ export const EncounterView: React.FC<{}> = () => {
                 name: "pc",
                 actorType: ActorType.PC,
                 initiativeModifier: 1,
-                id: 0,
+                id: uuidv4(),
                 uniqueName: true
             })
         );
@@ -64,7 +65,7 @@ export const EncounterView: React.FC<{}> = () => {
                 name: "npc",
                 actorType: ActorType.NPC,
                 initiativeModifier: 2,
-                id: 1,
+                id: uuidv4(),
                 uniqueName: false
             })
         );
