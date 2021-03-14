@@ -7,31 +7,44 @@ import {
     ObservableValue
 } from "@/render/core/Observable";
 import { getRandomInt } from "@/util";
+import { v4 as uuidv4 } from "uuid";
+
+export interface EncounterData {
+    readonly actors: IObservableArray<IObservableValue<Actor>>;
+    readonly id: string;
+}
 
 export class Encounter {
-    private readonly actors: IObservableArray<
-        IObservableValue<Actor>
-    > = new ObservableArray<ObservableValue<Actor>>();
+    public readonly encounterData: EncounterData;
 
-    constructor() {}
+    constructor(encounterData?: EncounterData) {
+        if (encounterData) {
+            this.encounterData = encounterData;
+        } else {
+            this.encounterData = {
+                actors: new ObservableArray<ObservableValue<Actor>>(),
+                id: uuidv4()
+            };
+        }
+    }
 
     public getActors(): IReadonlyObservableArray<IObservableValue<Actor>> {
-        return this.actors;
+        return this.encounterData.actors;
     }
 
     public addActor(actor: Actor) {
         if (!actor.template.uniqueName) {
-            const count = this.actors.value.filter(
+            const count = this.encounterData.actors.value.filter(
                 ({ value }) => value.template.id == actor.template.id
             ).length;
             actor = { ...actor, name: `${actor.template.name} ${count + 1}` };
         }
 
-        this.actors.push(new ObservableValue(actor));
+        this.encounterData.actors.push(new ObservableValue(actor));
     }
 
     public updateActor(actor: Actor) {
-        const actorToUpdate = this.actors.value.find(
+        const actorToUpdate = this.encounterData.actors.value.find(
             x => x.value.id == actor.id
         );
 
@@ -43,7 +56,7 @@ export class Encounter {
     }
 
     public startEncounter(forceRestart?: boolean): void {
-        this.actors.value = this.actors.value.map(
+        this.encounterData.actors.value = this.encounterData.actors.value.map(
             (actor: IObservableValue<Actor>) => {
                 if (forceRestart || undefined == actor.value.initiative) {
                     actor.value.initiative =
@@ -57,7 +70,9 @@ export class Encounter {
     }
 
     public sortByInitiative(): void {
-        this.actors.value = [...this.actors.value].sort(
+        this.encounterData.actors.value = [
+            ...this.encounterData.actors.value
+        ].sort(
             (actor1, actor2) =>
                 (actor1.value.initiative || -1) -
                 (actor2.value.initiative || -1)

@@ -7,7 +7,7 @@ import {
 } from "@material-ui/core";
 import * as React from "react";
 import { theme } from "@/render/theme";
-import { EncounterView } from "./views/Encounter";
+import { EncounterView } from "./views/EncounterView";
 
 const useStyles = makeStyles(theme =>
     createStyles({

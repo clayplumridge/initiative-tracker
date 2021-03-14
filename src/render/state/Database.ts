@@ -1,10 +1,16 @@
-import low, { AdapterAsync, AdapterSync, LowdbSync } from "lowdb";
+import { ActorTemplate } from "@/models";
+import low, { AdapterSync, LowdbSync } from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-import fs from "fs";
+import { Encounter, EncounterData } from "@/render/state/Encounter";
 
 const dataFile: string = "db.json";
-const adapter: AdapterSync = new FileSync(dataFile);
+const adapter: AdapterSync<Schema> = new FileSync<Schema>(dataFile);
 const db: LowdbSync<any> = low(adapter);
+
+interface Schema {
+    actorTemplates: Array<ActorTemplate>;
+    encounters: Array<EncounterData>;
+}
 
 export class Database {
     constructor() {
@@ -25,5 +31,26 @@ export class Database {
         //         }
         //     });
         // });
+    }
+
+    public createEncounter(encounter: Encounter): void {
+        db.get("encounters")
+            .push({ ...encounter.encounterData })
+            .write();
+    }
+
+    public updateEncounter(encounter: Encounter): void {
+        db.get("encounters")
+            .find({ id: encounter.encounterData.id })
+            .assign({ ...encounter.encounterData })
+            .write();
+    }
+
+    public getEncounter(encounterId: string): EncounterData {
+        return db.get("encounters").find({ id: encounterId }).write();
+    }
+
+    public removeEncounter(encounterId: string): void {
+        db.get("encounters").remove({ id: encounterId }).write();
     }
 }
