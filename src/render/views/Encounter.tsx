@@ -175,18 +175,18 @@ const NpcRow: React.FC<{ actor: IReadonlyObservableValue<NpcActor> }> = ({
     const styles = useRowStyles();
 
     return (
-        <Observer observed={{ actorInt: actor }}>
-            {({ actorInt }) => (
+        <Observer observed={{ actor }}>
+            {({ actor }) => (
                 <TableRow className={styles.row}>
                     <EditableTextCell
                         label={"Name"}
                         onChange={val =>
-                            encounter.updateActor({ ...actorInt, name: val })
+                            encounter.updateActor({ ...actor, name: val })
                         }
                         onCommit={() => true}
-                        value={actorInt.name}
+                        value={actor.name}
                     />
-                    <TableCell>{actorInt.initiative}</TableCell>
+                    <TableCell>{actor.initiative}</TableCell>
                 </TableRow>
             )}
         </Observer>
