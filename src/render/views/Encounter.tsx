@@ -25,26 +25,6 @@ import { IReadonlyObservableValue } from "@/render/core/Observable";
 
 const encounter: Encounter = new Encounter();
 
-encounter.addActor(
-    createActor({
-        name: "pc",
-        actorType: ActorType.PC,
-        initiativeModifier: 1,
-        id: 0,
-        uniqueName: true
-    })
-);
-
-encounter.addActor(
-    createActor({
-        name: "npc",
-        actorType: ActorType.NPC,
-        initiativeModifier: 2,
-        id: 1,
-        uniqueName: false
-    })
-);
-
 const useStyles = makeStyles(theme =>
     createStyles({
         startEncounterButton: {
@@ -70,7 +50,9 @@ export const EncounterView: React.FC<{}> = () => {
             createActor({
                 name: "pc",
                 actorType: ActorType.PC,
-                initiativeModifier: 1
+                initiativeModifier: 1,
+                id: 0,
+                uniqueName: true
             })
         );
         handleClose();
@@ -81,7 +63,9 @@ export const EncounterView: React.FC<{}> = () => {
             createActor({
                 name: "npc",
                 actorType: ActorType.NPC,
-                initiativeModifier: 2
+                initiativeModifier: 2,
+                id: 1,
+                uniqueName: false
             })
         );
         handleClose();
