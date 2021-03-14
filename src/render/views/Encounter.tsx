@@ -67,6 +67,19 @@ export const EncounterView: React.FC<{}> = () => {
             >
                 Start Encounter
             </Button>
+            <Button
+                className={styles.startEncounterButton}
+                onClick={() => encounter.startEncounter(true)}
+            >
+                Restart Encounter
+            </Button>
+
+            <Button
+                className={styles.startEncounterButton}
+                onClick={() => encounter.sortByInitiative()}
+            >
+                Sort By Initiative
+            </Button>
         </Paper>
     );
 };

@@ -27,5 +27,13 @@ export class Encounter {
             }
             return actor;
         });
+        this.sortByInitiative();
+    }
+
+    public sortByInitiative(initiativeActors?: ReadonlyArray<Actor>): void {
+        this.actors.value = [...this.actors.value].sort(
+            (actor1, actor2) =>
+                (actor1.initiative || -1) - (actor2.initiative || -1)
+        );
     }
 }
