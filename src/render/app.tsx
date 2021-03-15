@@ -10,6 +10,7 @@ import { theme } from "@/render/theme";
 import { EncounterView } from "./views/EncounterView";
 import { Database } from "@/render/state/Database";
 import { EncounterManager } from "@/render/state/EncounterManager";
+import { ActorTemplateManager } from "./state/ActorTemplateManager";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -22,6 +23,10 @@ const useStyles = makeStyles(theme =>
 const database: Database = new Database();
 
 const encounterManager: EncounterManager = new EncounterManager(database);
+
+const actorTemplateManager: ActorTemplateManager = new ActorTemplateManager(
+    database
+);
 
 export default function App() {
     const styles = useStyles();
