@@ -15,22 +15,6 @@ interface Schema {
 export class Database {
     constructor() {
         db.defaults({ actorTemplates: [], encounters: [] }).write();
-
-        // //Check if we have read/write permissions to the database
-        // //Then, check if the database is initalized, and if it isn't, initalize it
-        // fs.accessSync(dataFile, fs.constants.R_OK | fs.constants.W_OK);
-        // fs.open(dataFile, "r", (err, fd) => {
-        //     if (err) throw err;
-        //     const readData: Uint8Array = new Uint8Array();
-        //     fs.read(fd, readData, 0, 1, 0, () => {
-        //         fs.close(fd, err => {
-        //             if (err) throw err;
-        //         });
-        //         if (!readData[0]) {
-        //             db.defaults({ actorTemplates: [], encounters: [] }).write();
-        //         }
-        //     });
-        // });
     }
 
     public createEncounter(encounter: Encounter): void {
@@ -50,7 +34,32 @@ export class Database {
         return db.get("encounters").find({ id: encounterId }).value();
     }
 
+    public getEncounters(): EncounterData[] {
+        return db.get("encounters").value();
+    }
+
     public removeEncounter(encounterId: string): void {
         db.get("encounters").remove({ id: encounterId }).write();
+    }
+
+    public addActorTemplate(actorTemplate: ActorTemplate): void {
+        db.get("actorTemplates")
+            .push({ ...actorTemplate })
+            .write();
+    }
+
+    public updateActorTemplate(actorTemplate: ActorTemplate): void {
+        db.get("actorTemplates")
+            .find({ id: actorTemplate.id })
+            .assign({ ...actorTemplate })
+            .write();
+    }
+
+    public getActorTemplate(actorTemplateId: string): ActorTemplate {
+        return db.get("actorTemplates").find({ id: actorTemplateId }).value();
+    }
+
+    public getActorTemplates(): ActorTemplate[] {
+        return db.get("actorTemplates").value();
     }
 }

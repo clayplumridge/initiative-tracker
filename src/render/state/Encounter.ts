@@ -12,6 +12,7 @@ import { v4 as uuidv4 } from "uuid";
 export interface EncounterData {
     readonly actors: IObservableArray<IObservableValue<Actor>>;
     readonly id: string;
+    readonly name: string;
 }
 
 export class Encounter {
@@ -23,7 +24,8 @@ export class Encounter {
         } else {
             this.encounterData = {
                 actors: new ObservableArray<ObservableValue<Actor>>(),
-                id: uuidv4()
+                id: uuidv4(),
+                name: "Unnamed Encounter"
             };
         }
     }

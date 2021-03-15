@@ -8,7 +8,7 @@ export class EncounterManager {
         this.database = database;
     }
 
-    public loadEncounter(encounterId: string): Encounter {
+    public getEncounter(encounterId: string): Encounter {
         const encounterData: EncounterData = this.database.getEncounter(
             encounterId
         );
@@ -18,6 +18,16 @@ export class EncounterManager {
         } else {
             throw "No encounter found with that identifier";
         }
+    }
+
+    public getEncounters(): Map<String, String> {
+        const encounters: Map<String, String> = new Map<String, String>();
+        this.database
+            .getEncounters()
+            .map((encounter: EncounterData) =>
+                encounters.set(encounter.name, encounter.id)
+            );
+        return encounters;
     }
 
     public createNewEncounter(): Encounter {
