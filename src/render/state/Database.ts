@@ -1,5 +1,5 @@
 import { ActorTemplate } from "@/models";
-import low, { AdapterSync, LowdbSync } from "lowdb";
+import low, { AdapterSync } from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import { Encounter, EncounterData } from "@/render/state/Encounter";
 
