@@ -8,6 +8,8 @@ import {
 import * as React from "react";
 import { theme } from "@/render/theme";
 import { EncounterView } from "./views/EncounterView";
+import { Database } from "@/render/state/Database";
+import { EncounterManager } from "@/render/state/EncounterManager";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -16,6 +18,10 @@ const useStyles = makeStyles(theme =>
         }
     })
 );
+
+const database: Database = new Database();
+
+const encounterManager: EncounterManager = new EncounterManager(database);
 
 export default function App() {
     const styles = useStyles();
@@ -32,7 +38,9 @@ export default function App() {
                     flexGrow={1}
                     p={1}
                 >
-                    <EncounterView />
+                    <EncounterView
+                        encounter={encounterManager.createNewEncounter()}
+                    />
                 </Box>
             </Box>
         </ThemeProvider>

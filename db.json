@@ -1,0 +1,15 @@
+{
+  "actorTemplates": [],
+  "encounters": [
+    {
+      "actors": {
+        "_value": [],
+        "emitter": {
+          "_events": {},
+          "_eventsCount": 0
+        }
+      },
+      "id": "61541565-3d96-49be-a308-74d0e493e860"
+    }
+  ]
+}

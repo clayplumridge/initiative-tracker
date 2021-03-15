@@ -13,8 +13,7 @@ import {
     TableContainer,
     TableHead,
     TableRow,
-    TextField,
-    Typography
+    TextField
 } from "@material-ui/core";
 import { Encounter } from "@/render/state/Encounter";
 import * as React from "react";
@@ -24,8 +23,6 @@ import { Actor, ActorType, createActor, NpcActor, PlayerActor } from "@/models";
 import { IObservableValue } from "@/render/core/Observable";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
 
-const encounter: Encounter = new Encounter();
-
 const useStyles = makeStyles(theme =>
     createStyles({
         startEncounterButton: {
@@ -34,7 +31,9 @@ const useStyles = makeStyles(theme =>
     })
 );
 
-export const EncounterView: React.FC<{}> = () => {
+export const EncounterView: React.FC<{ encounter: Encounter }> = ({
+    encounter
+}) => {
     const styles = useStyles();
 
     const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
@@ -85,7 +84,12 @@ export const EncounterView: React.FC<{}> = () => {
                     <TableBody>
                         <Observer observed={{ actors: encounter.getActors() }}>
                             {({ actors }) =>
-                                actors.map(actor => <ActorRow actor={actor} />)
+                                actors.map(actor => (
+                                    <ActorRow
+                                        actor={actor}
+                                        encounter={encounter}
+                                    />
+                                ))
                             }
                         </Observer>
                     </TableBody>
@@ -134,12 +138,20 @@ export const EncounterView: React.FC<{}> = () => {
     );
 };
 
-const ActorRow: React.FC<{ actor: IObservableValue<Actor> }> = ({ actor }) => {
+const ActorRow: React.FC<{
+    actor: IObservableValue<Actor>;
+    encounter: Encounter;
+}> = ({ actor, encounter }) => {
     switch (actor.value.actorType) {
         case ActorType.PC:
             return <PlayerRow actor={actor as IObservableValue<PlayerActor>} />;
         case ActorType.NPC:
-            return <NpcRow actor={actor as IObservableValue<NpcActor>} />;
+            return (
+                <NpcRow
+                    actor={actor as IObservableValue<NpcActor>}
+                    encounter={encounter}
+                />
+            );
         default:
             return null;
     }
@@ -169,9 +181,10 @@ const PlayerRow: React.FC<{ actor: IObservableValue<PlayerActor> }> = ({
     );
 };
 
-const NpcRow: React.FC<{ actor: IReadonlyObservableValue<NpcActor> }> = ({
-    actor
-}) => {
+const NpcRow: React.FC<{
+    actor: IReadonlyObservableValue<NpcActor>;
+    encounter: Encounter;
+}> = ({ actor, encounter }) => {
     const styles = useRowStyles();
 
     return (
