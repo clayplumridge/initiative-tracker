@@ -18,6 +18,10 @@ const db = low(adapter);
 export class Database {
     constructor() {
         db.defaults(DbDefaults).write();
+
+        if (db.get("version").value() < DbDefaults.version) {
+            // TODO: Run migrations
+        }
     }
 
     private tables() {
