@@ -13,6 +13,9 @@ export const enum RegistryKeys {
 export type TableKey = keyof Schema["tables"];
 export type RegistryKey = keyof Schema["registry"];
 
+type UnwrapArray<T> = T extends Array<infer U> ? U : never;
+export type TableType<T extends TableKey> = UnwrapArray<Schema["tables"][T]>;
+
 export interface Schema {
     version: number;
     tables: {
