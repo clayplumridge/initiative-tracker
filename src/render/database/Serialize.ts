@@ -3,7 +3,7 @@ import {
     IObservableValue,
     ObservableValue,
     ObservableArray
-} from "../core/Observable";
+} from "@/render/core/Observable";
 
 type UnwrappedObservableChain<T> = T extends IObservableArray<infer U>
     ? UnwrappedObservableChain<U>[]
