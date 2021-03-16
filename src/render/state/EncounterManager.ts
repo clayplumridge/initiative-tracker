@@ -1,5 +1,5 @@
 import { Encounter, EncounterData } from "@/render/state/Encounter";
-import { Database } from "@/render/state/Database";
+import { Database } from "@/render/database/Database";
 import { IObservableValue, ObservableValue } from "@/render/core/Observable";
 
 export class EncounterManager {

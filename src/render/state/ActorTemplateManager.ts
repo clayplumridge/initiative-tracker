@@ -1,5 +1,5 @@
 import { ActorTemplate } from "@/models";
-import { Database } from "./Database";
+import { Database } from "../database/Database";
 
 export class ActorTemplateManager {
     private readonly database: Database;
