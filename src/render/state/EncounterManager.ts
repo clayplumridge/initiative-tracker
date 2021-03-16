@@ -1,14 +1,40 @@
-import { Encounter, EncounterData } from "./Encounter";
+import { Encounter, EncounterData } from "@/render/state/Encounter";
 import { Database } from "@/render/state/Database";
+import { IObservableValue, ObservableValue } from "@/render/core/Observable";
 
 export class EncounterManager {
     private readonly database: Database;
 
+    private readonly currentEncounter: IObservableValue<Encounter>;
+
     constructor(database: Database) {
         this.database = database;
+        const currentEncounterId: string = this.database.getCurrentEncounterId();
+        if (currentEncounterId) {
+            const currentEncounter: Encounter = this.getEncounter(
+                currentEncounterId
+            );
+            console.log(currentEncounter);
+            this.currentEncounter = new ObservableValue<Encounter>(
+                currentEncounter
+            );
+        } else {
+            this.currentEncounter = new ObservableValue<Encounter>(
+                this.createNewEncounter()
+            );
+        }
     }
 
-    public getEncounter(encounterId: string): Encounter {
+    public loadEncounter(encounterId: string): void {
+        this.currentEncounter.value = this.getEncounter(encounterId);
+        this.database.setCurrentEncounterId(encounterId);
+    }
+
+    public getCurrentEncounter(): IObservableValue<Encounter> {
+        return this.currentEncounter;
+    }
+
+    private getEncounter(encounterId: string): Encounter {
         const encounterData: EncounterData = this.database.getEncounter(
             encounterId
         );
@@ -33,6 +59,7 @@ export class EncounterManager {
     public createNewEncounter(): Encounter {
         const encounter: Encounter = new Encounter();
         this.database.createEncounter(encounter);
+        this.database.setCurrentEncounterId(encounter.encounterData.id);
         return encounter;
     }
 

@@ -10,11 +10,16 @@ const db = low(adapter);
 interface Schema {
     actorTemplates: Array<ActorTemplate>;
     encounters: Array<EncounterData>;
+    currentEncounterId: string;
 }
 
 export class Database {
     constructor() {
-        db.defaults({ actorTemplates: [], encounters: [] }).write();
+        db.defaults({
+            actorTemplates: [],
+            encounters: [],
+            currentEncounterId: null
+        }).write();
     }
 
     public createEncounter(encounter: Encounter): void {
@@ -61,5 +66,13 @@ export class Database {
 
     public getActorTemplates(): ActorTemplate[] {
         return db.get("actorTemplates").value();
+    }
+
+    public getCurrentEncounterId(): string {
+        return db.get("currentEncounterId").value();
+    }
+
+    public setCurrentEncounterId(encounterId: string): void {
+        db.set("currentEncounterId", encounterId).write();
     }
 }

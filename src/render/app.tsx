@@ -11,6 +11,7 @@ import { EncounterView } from "./views/EncounterView";
 import { Database } from "@/render/state/Database";
 import { EncounterManager } from "@/render/state/EncounterManager";
 import { ActorTemplateManager } from "./state/ActorTemplateManager";
+import { Observer } from "./components/Observer";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -43,9 +44,15 @@ export default function App() {
                     flexGrow={1}
                     p={1}
                 >
-                    <EncounterView
-                        encounter={encounterManager.createNewEncounter()}
-                    />
+                    <Observer
+                        observed={{
+                            encounter: encounterManager.getCurrentEncounter()
+                        }}
+                    >
+                        {({ encounter }) => (
+                            <EncounterView encounter={encounter} />
+                        )}
+                    </Observer>
                 </Box>
             </Box>
         </ThemeProvider>
