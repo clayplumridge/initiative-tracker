@@ -2,77 +2,97 @@ import { ActorTemplate } from "@/models";
 import low, { AdapterSync } from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
 import { Encounter, EncounterData } from "@/render/state/Encounter";
+import {
+    Schema,
+    DbDefaults,
+    RegistryKey,
+    TableKey,
+    TableNames,
+    RegistryKeys
+} from "./Schema";
 
 const dataFile: string = "db.json";
 const adapter: AdapterSync<Schema> = new FileSync<Schema>(dataFile);
 const db = low(adapter);
 
-interface Schema {
-    actorTemplates: Array<ActorTemplate>;
-    encounters: Array<EncounterData>;
-    currentEncounterId: string;
-}
-
 export class Database {
     constructor() {
-        db.defaults({
-            actorTemplates: [],
-            encounters: [],
-            currentEncounterId: null
-        }).write();
+        db.defaults(DbDefaults).write();
+    }
+
+    private tables() {
+        return db.get("tables");
+    }
+
+    private table<T extends TableKey>(table: T) {
+        return this.tables().get(table);
+    }
+
+    private registry() {
+        return db.get("registry");
+    }
+
+    private registryValue<T extends RegistryKey>(registryKey: T) {
+        return this.registry().get(registryKey);
     }
 
     public createEncounter(encounter: Encounter): void {
-        db.get("encounters")
+        this.table(TableNames.encounter)
             .push({ ...encounter.encounterData })
             .write();
     }
 
     public updateEncounter(encounter: Encounter): void {
-        db.get("encounters")
+        this.table(TableNames.encounter)
             .find({ id: encounter.encounterData.id })
             .assign({ ...encounter.encounterData })
             .write();
     }
 
     public getEncounter(encounterId: string): EncounterData {
-        return db.get("encounters").find({ id: encounterId }).value();
+        return this.table(TableNames.encounter)
+            .find({ id: encounterId })
+            .value();
     }
 
     public getEncounters(): EncounterData[] {
-        return db.get("encounters").value();
+        return this.table(TableNames.encounter).value();
     }
 
     public removeEncounter(encounterId: string): void {
-        db.get("encounters").remove({ id: encounterId }).write();
+        this.table(TableNames.encounter).remove({ id: encounterId }).write();
     }
 
     public addActorTemplate(actorTemplate: ActorTemplate): void {
-        db.get("actorTemplates")
+        this.table(TableNames.actorTemplate)
             .push({ ...actorTemplate })
             .write();
     }
 
     public updateActorTemplate(actorTemplate: ActorTemplate): void {
-        db.get("actorTemplates")
+        this.table(TableNames.actorTemplate)
             .find({ id: actorTemplate.id })
             .assign({ ...actorTemplate })
             .write();
     }
 
     public getActorTemplate(actorTemplateId: string): ActorTemplate {
-        return db.get("actorTemplates").find({ id: actorTemplateId }).value();
+        return this.table(TableNames.actorTemplate)
+            .find({ id: actorTemplateId })
+            .value();
     }
 
     public getActorTemplates(): ActorTemplate[] {
-        return db.get("actorTemplates").value();
+        return this.table(TableNames.actorTemplate).value();
     }
 
     public getCurrentEncounterId(): string {
-        return db.get("currentEncounterId").value();
+        return this.registryValue(RegistryKeys.currentEncounterId).value();
     }
 
     public setCurrentEncounterId(encounterId: string): void {
-        db.set("currentEncounterId", encounterId).write();
+        this.registry()
+            .set(RegistryKeys.currentEncounterId, encounterId)
+            .write();
     }
 }
