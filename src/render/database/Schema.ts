@@ -14,6 +14,7 @@ export type TableKey = keyof Schema["tables"];
 export type RegistryKey = keyof Schema["registry"];
 
 export interface Schema {
+    version: number;
     tables: {
         [TableNames.actorTemplate]: ActorTemplate[];
         [TableNames.encounter]: EncounterData[];
@@ -24,6 +25,7 @@ export interface Schema {
 }
 
 export const DbDefaults: Schema = {
+    version: 1,
     tables: {
         [TableNames.actorTemplate]: [],
         [TableNames.encounter]: []
