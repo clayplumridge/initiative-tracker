@@ -7,11 +7,11 @@ import {
 } from "@material-ui/core";
 import * as React from "react";
 import { theme } from "@/render/theme";
-import { EncounterView } from "./views/EncounterView";
+import { EncounterView } from "@/render/views/EncounterView";
 import { Database } from "@/render/database/Database";
 import { EncounterManager } from "@/render/state/EncounterManager";
-import { ActorTemplateManager } from "./state/ActorTemplateManager";
-import { Observer } from "./components/Observer";
+import { ActorTemplateManager } from "@/render/state/ActorTemplateManager";
+import { Observer } from "@/render/components/Observer";
 
 const useStyles = makeStyles(theme =>
     createStyles({

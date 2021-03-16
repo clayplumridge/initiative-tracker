@@ -9,7 +9,7 @@ import {
     TableKey,
     TableNames,
     RegistryKeys
-} from "./Schema";
+} from "@/render/database/Schema";
 
 const dataFile: string = "db.json";
 const adapter: AdapterSync<Schema> = new FileSync<Schema>(dataFile);
