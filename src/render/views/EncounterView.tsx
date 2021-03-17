@@ -228,10 +228,7 @@ export const EditableTextCell: React.FC<{
                 {isEditable ? (
                     <TextField
                         label={label}
-                        onChange={ev => {
-                            console.log(ev.target.value);
-                            onChange(ev.target.value);
-                        }}
+                        onChange={ev => onChange(ev.target.value)}
                         value={value}
                     />
                 ) : (

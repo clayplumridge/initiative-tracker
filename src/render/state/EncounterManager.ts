@@ -1,4 +1,8 @@
-import { Encounter, EncounterData } from "@/render/state/Encounter";
+import {
+    Encounter,
+    EncounterData,
+    fromSerializable as fromSerializableEncounterData
+} from "@/render/state/Encounter";
 import { Database } from "@/render/database/Database";
 import { IObservableValue, ObservableValue } from "@/render/core/Observable";
 
@@ -14,7 +18,6 @@ export class EncounterManager {
             const currentEncounter: Encounter = this.getEncounter(
                 currentEncounterId
             );
-            console.log(currentEncounter);
             this.currentEncounter = new ObservableValue<Encounter>(
                 currentEncounter
             );
@@ -35,11 +38,12 @@ export class EncounterManager {
     }
 
     private getEncounter(encounterId: string): Encounter {
-        const encounterData: EncounterData = this.database.getEncounter(
-            encounterId
+        const data: EncounterData = fromSerializableEncounterData(
+            this.database.getEncounter(encounterId)
         );
-        if (encounterData) {
-            const encounter: Encounter = new Encounter(encounterData);
+
+        if (data) {
+            const encounter: Encounter = new Encounter(data);
             return encounter;
         } else {
             throw "No encounter found with that identifier";
@@ -50,9 +54,8 @@ export class EncounterManager {
         const encounters: Map<String, String> = new Map<String, String>();
         this.database
             .getEncounters()
-            .map((encounter: EncounterData) =>
-                encounters.set(encounter.name, encounter.id)
-            );
+            .map(encounter => encounters.set(encounter.name, encounter.id));
+
         return encounters;
     }
 

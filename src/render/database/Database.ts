@@ -10,6 +10,7 @@ import {
     TableNames,
     RegistryKeys
 } from "@/render/database/Schema";
+import { Serializable, serialize } from "./Serialize";
 
 const dataFile: string = "db.json";
 const adapter: AdapterSync<Schema> = new FileSync<Schema>(dataFile);
@@ -42,7 +43,7 @@ export class Database {
 
     public createEncounter(encounter: Encounter): void {
         this.table(TableNames.encounter)
-            .push({ ...encounter.encounterData })
+            .push(serialize(encounter.encounterData))
             .write();
     }
 
@@ -53,13 +54,13 @@ export class Database {
             .write();
     }
 
-    public getEncounter(encounterId: string): EncounterData {
+    public getEncounter(encounterId: string): Serializable<EncounterData> {
         return this.table(TableNames.encounter)
             .find({ id: encounterId })
             .value();
     }
 
-    public getEncounters(): EncounterData[] {
+    public getEncounters(): Serializable<EncounterData>[] {
         return this.table(TableNames.encounter).value();
     }
 

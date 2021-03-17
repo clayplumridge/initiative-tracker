@@ -1,5 +1,6 @@
 import { ActorTemplate } from "@/models";
 import { EncounterData } from "@/render/state/Encounter";
+import { Serializable } from "./Serialize";
 
 export const enum TableNames {
     actorTemplate = "actorTemplate",
@@ -19,8 +20,8 @@ export type TableType<T extends TableKey> = UnwrapArray<Schema["tables"][T]>;
 export interface Schema {
     version: number;
     tables: {
-        [TableNames.actorTemplate]: ActorTemplate[];
-        [TableNames.encounter]: EncounterData[];
+        [TableNames.actorTemplate]: Serializable<ActorTemplate>[];
+        [TableNames.encounter]: Serializable<EncounterData>[];
     };
     registry: {
         [RegistryKeys.currentEncounterId]?: string;

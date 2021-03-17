@@ -8,11 +8,23 @@ import {
 } from "@/render/core/Observable";
 import { getRandomInt } from "@/util";
 import { v4 as uuidv4 } from "uuid";
+import { Serializable } from "../database/Serialize";
 
 export interface EncounterData {
     readonly actors: IObservableArray<IObservableValue<Actor>>;
     readonly id: string;
     readonly name: string;
+}
+
+export function fromSerializable(
+    data: Serializable<EncounterData>
+): EncounterData {
+    return {
+        ...data,
+        actors: new ObservableArray(
+            data.actors.map(x => new ObservableValue(x))
+        )
+    };
 }
 
 export class Encounter {
