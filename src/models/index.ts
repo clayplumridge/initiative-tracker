@@ -1,4 +1,3 @@
-import { match } from "ts-pattern";
 import { v4 } from "uuid";
 
 export interface ActorTemplate {
@@ -33,24 +32,8 @@ export interface PlayerActor extends ActorBase {
 export type Actor = PlayerActor | NpcActor;
 
 export function createActor(template: ActorTemplate): Actor {
-    return match(template)
-        .with({ actorType: ActorType.NPC }, res => createNpc(res))
-        .with({ actorType: ActorType.PC }, res => createPc(res))
-        .run();
-}
-
-function createNpc(template: ActorTemplate): Actor {
     return {
-        actorType: template.actorType,
-        id: v4(),
-        name: template.name,
-        template: template
-    };
-}
-
-function createPc(template: ActorTemplate): Actor {
-    return {
-        actorType: template.actorType,
+        actorType: ActorType.NPC,
         id: v4(),
         name: template.name,
         template: template
