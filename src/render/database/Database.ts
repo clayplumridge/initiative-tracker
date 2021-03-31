@@ -50,7 +50,7 @@ export class Database {
     public updateEncounter(encounter: Encounter): void {
         this.table(TableNames.encounter)
             .find({ id: encounter.encounterData.id })
-            .assign({ ...encounter.encounterData })
+            .assign({ ...serialize(encounter.encounterData) })
             .write();
     }
 
@@ -70,14 +70,14 @@ export class Database {
 
     public addActorTemplate(actorTemplate: ActorTemplate): void {
         this.table(TableNames.actorTemplate)
-            .push({ ...actorTemplate })
+            .push({ ...serialize(actorTemplate) })
             .write();
     }
 
     public updateActorTemplate(actorTemplate: ActorTemplate): void {
         this.table(TableNames.actorTemplate)
             .find({ id: actorTemplate.id })
-            .assign({ ...actorTemplate })
+            .assign({ ...serialize(actorTemplate) })
             .write();
     }
 
