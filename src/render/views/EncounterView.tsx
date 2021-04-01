@@ -3,6 +3,7 @@ import {
     Button,
     ClickAwayListener,
     createStyles,
+    IconButton,
     makeStyles,
     Menu,
     MenuItem,
@@ -22,6 +23,7 @@ import { Observer } from "@/render/components/Observer";
 import { Actor, ActorType, createActor, NpcActor, PlayerActor } from "@/models";
 import { IObservableValue } from "@/render/core/Observable";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
+import { Save } from "@material-ui/icons";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -84,10 +86,11 @@ export const EncounterView: React.FC<{ encounter: Encounter }> = ({
                     <TableBody>
                         <Observer observed={{ actors: encounter.getActors() }}>
                             {({ actors }) =>
-                                actors.map(actor => (
+                                actors.map((actor, idx) => (
                                     <ActorRow
                                         actor={actor}
                                         encounter={encounter}
+                                        key={idx}
                                     />
                                 ))
                             }
@@ -206,6 +209,14 @@ const NpcRow: React.FC<{
     );
 };
 
+const useEditableCellStyles = makeStyles(theme =>
+    createStyles({
+        iconButton: {
+            alignSelf: "flex-end"
+        }
+    })
+);
+
 export const EditableTextCell: React.FC<{
     label?: string;
     onChange: (val: string) => void;
@@ -222,15 +233,40 @@ export const EditableTextCell: React.FC<{
         }
     };
 
+    const onClickSave = (
+        event: React.MouseEvent<HTMLButtonElement, MouseEvent>
+    ) => {
+        const commitResult = onCommit(value);
+
+        if (commitResult) {
+            setIsEditable(false);
+            event.preventDefault();
+        }
+    };
+
+    const styles = useEditableCellStyles();
+
     return (
         <ClickAwayListener onClickAway={onClickAway}>
-            <TableCell onClick={() => setIsEditable(true)}>
+            <TableCell
+                onClick={ev => !ev.isDefaultPrevented() && setIsEditable(true)}
+            >
                 {isEditable ? (
-                    <TextField
-                        label={label}
-                        onChange={ev => onChange(ev.target.value)}
-                        value={value}
-                    />
+                    <Box display="flex" flexDirection="row">
+                        <TextField
+                            label={label}
+                            onChange={ev => onChange(ev.target.value)}
+                            value={value}
+                        />
+
+                        <IconButton
+                            aria-label="save"
+                            className={styles.iconButton}
+                            onClick={onClickSave}
+                        >
+                            <Save />
+                        </IconButton>
+                    </Box>
                 ) : (
                     value
                 )}
