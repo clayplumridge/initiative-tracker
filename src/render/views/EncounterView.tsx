@@ -86,11 +86,11 @@ export const EncounterView: React.FC<{ encounter: Encounter }> = ({
                     <TableBody>
                         <Observer observed={{ actors: encounter.getActors() }}>
                             {({ actors }) =>
-                                actors.map((actor, idx) => (
+                                actors.map(actor => (
                                     <ActorRow
                                         actor={actor}
                                         encounter={encounter}
-                                        key={idx}
+                                        key={actor.value.id}
                                     />
                                 ))
                             }
