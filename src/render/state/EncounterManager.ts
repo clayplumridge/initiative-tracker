@@ -1,18 +1,18 @@
+import { Encounter } from "@/render/state/Encounter";
 import {
-    Encounter,
-    EncounterData,
-    fromSerializable as fromSerializableEncounterData
-} from "@/render/state/Encounter";
-import { Database } from "@/render/database/Database";
+    DatabaseConnection,
+    getDatabaseConnection
+} from "@/render/database/DatabaseConnection";
 import { IObservableValue, ObservableValue } from "@/render/core/Observable";
+import { createSingletonGetter } from "@/util";
 
-export class EncounterManager {
-    private readonly database: Database;
+class EncounterManager {
+    private readonly database: DatabaseConnection;
 
     private readonly currentEncounter: IObservableValue<Encounter>;
 
-    constructor(database: Database) {
-        this.database = database;
+    constructor() {
+        this.database = getDatabaseConnection();
         const currentEncounterId: string = this.database.getCurrentEncounterId();
         if (currentEncounterId) {
             const currentEncounter: Encounter = this.getEncounter(
@@ -38,9 +38,7 @@ export class EncounterManager {
     }
 
     private getEncounter(encounterId: string): Encounter {
-        const data: EncounterData = fromSerializableEncounterData(
-            this.database.getEncounter(encounterId)
-        );
+        const data = this.database.getEncounter(encounterId);
 
         if (data) {
             const encounter: Encounter = new Encounter(data);
@@ -61,8 +59,8 @@ export class EncounterManager {
 
     public createNewEncounter(): Encounter {
         const encounter: Encounter = new Encounter();
-        this.database.createEncounter(encounter);
-        this.database.setCurrentEncounterId(encounter.encounterData.id);
+        this.database.createEncounter(encounter.toDatabaseFormat());
+        this.database.setCurrentEncounterId(encounter.getId());
         return encounter;
     }
 
@@ -70,3 +68,5 @@ export class EncounterManager {
         this.database.removeEncounter(encounterId);
     }
 }
+
+export const getEncounterManager = createSingletonGetter(EncounterManager);

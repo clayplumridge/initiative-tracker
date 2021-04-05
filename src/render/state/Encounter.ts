@@ -1,38 +1,44 @@
-import { Actor } from "@/models";
+import { Actor, ActorTemplate } from "@/render/database/models";
 import {
-    IObservableArray,
     IObservableValue,
     IReadonlyObservableArray,
+    IReadonlyObservableValue,
     ObservableArray,
     ObservableValue
 } from "@/render/core/Observable";
 import { getRandomInt } from "@/util";
 import { v4 as uuidv4 } from "uuid";
-import { Serializable } from "../database/Serialize";
+import { DatabaseObject, TableNames } from "@/render/database/schema";
+import { serialize } from "../database/Serialize";
 
-export interface EncounterData {
-    readonly actors: IObservableArray<IObservableValue<Actor>>;
+type DatabaseEncounter = DatabaseObject<TableNames.encounter>;
+
+interface EncounterData {
+    readonly actors: ObservableArray<ObservableValue<Actor>>;
     readonly id: string;
     readonly name: string;
 }
 
-export function fromSerializable(
-    data: Serializable<EncounterData>
-): EncounterData {
+function createActor(template: ActorTemplate): Actor {
     return {
-        ...data,
-        actors: new ObservableArray(
-            data.actors.map(x => new ObservableValue(x))
-        )
+        template,
+        actorType: template.actorType,
+        id: uuidv4(),
+        name: template.name
     };
 }
 
 export class Encounter {
-    public readonly encounterData: EncounterData;
+    private readonly encounterData: EncounterData;
 
-    constructor(encounterData?: EncounterData) {
-        if (encounterData) {
-            this.encounterData = encounterData;
+    constructor(fromDatabase?: DatabaseEncounter) {
+        if (fromDatabase) {
+            this.encounterData = {
+                ...fromDatabase,
+                actors: new ObservableArray(
+                    fromDatabase.actors.map(x => new ObservableValue(x))
+                )
+            };
         } else {
             this.encounterData = {
                 actors: new ObservableArray<ObservableValue<Actor>>(),
@@ -42,19 +48,55 @@ export class Encounter {
         }
     }
 
-    public getActors(): IReadonlyObservableArray<IObservableValue<Actor>> {
-        return this.encounterData.actors;
-    }
+    public addActor(template: ActorTemplate) {
+        let actor = createActor(template);
 
-    public addActor(actor: Actor) {
-        if (!actor.template.uniqueName) {
+        if (!template.uniqueName) {
             const count = this.encounterData.actors.value.filter(
-                ({ value }) => value.template.id == actor.template.id
+                ({ value }) => value.template.id == template.id
             ).length;
             actor = { ...actor, name: `${actor.template.name} ${count + 1}` };
         }
 
         this.encounterData.actors.push(new ObservableValue(actor));
+    }
+
+    public getActors(): IReadonlyObservableArray<
+        IReadonlyObservableValue<Actor>
+    > {
+        return this.encounterData.actors;
+    }
+
+    public getId() {
+        return this.encounterData.id;
+    }
+
+    public sortByInitiative(): void {
+        this.encounterData.actors.value = [
+            ...this.encounterData.actors.value
+        ].sort(
+            (actor1, actor2) =>
+                (actor2.value.initiative || -1) -
+                (actor1.value.initiative || -1)
+        );
+    }
+
+    public startEncounter(forceRestart?: boolean): void {
+        this.encounterData.actors.value = this.encounterData.actors.value.map(
+            actor => {
+                if (forceRestart || undefined == actor.value.initiative) {
+                    actor.value.initiative =
+                        getRandomInt(1, 20) +
+                        actor.value.template.initiativeModifier;
+                }
+                return actor;
+            }
+        );
+        this.sortByInitiative();
+    }
+
+    public toDatabaseFormat(): DatabaseEncounter {
+        return serialize(this.encounterData);
     }
 
     public updateActor(actor: Actor) {
@@ -67,29 +109,5 @@ export class Encounter {
         } else {
             console.error("O no");
         }
-    }
-
-    public startEncounter(forceRestart?: boolean): void {
-        this.encounterData.actors.value = this.encounterData.actors.value.map(
-            (actor: IObservableValue<Actor>) => {
-                if (forceRestart || undefined == actor.value.initiative) {
-                    actor.value.initiative =
-                        getRandomInt(1, 20) +
-                        actor.value.template.initiativeModifier;
-                }
-                return actor;
-            }
-        );
-        this.sortByInitiative();
-    }
-
-    public sortByInitiative(): void {
-        this.encounterData.actors.value = [
-            ...this.encounterData.actors.value
-        ].sort(
-            (actor1, actor2) =>
-                (actor1.value.initiative || -1) -
-                (actor2.value.initiative || -1)
-        );
     }
 }

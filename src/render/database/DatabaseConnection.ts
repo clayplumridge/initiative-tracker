@@ -1,22 +1,25 @@
-import { ActorTemplate } from "@/models";
 import low, { AdapterSync } from "lowdb";
 import FileSync from "lowdb/adapters/FileSync";
-import { Encounter, EncounterData } from "@/render/state/Encounter";
 import {
     Schema,
-    DbDefaults,
-    RegistryKey,
-    TableKey,
     TableNames,
-    RegistryKeys
-} from "@/render/database/Schema";
-import { Serializable, serialize } from "./Serialize";
+    RegistryKeys,
+    DatabaseObject
+} from "@/render/database/schema";
+import { DbDefaults } from "./defaults";
+import { createSingletonGetter } from "@/util";
+
+type TableKey = keyof Schema["tables"];
+type RegistryKey = keyof Schema["registry"];
+
+type ActorTemplate = DatabaseObject<TableNames.actorTemplate>;
+type Encounter = DatabaseObject<TableNames.encounter>;
 
 const dataFile: string = "db.json";
 const adapter: AdapterSync<Schema> = new FileSync<Schema>(dataFile);
 const db = low(adapter);
 
-export class Database {
+export class DatabaseConnection {
     constructor() {
         db.defaults(DbDefaults).write();
 
@@ -42,25 +45,23 @@ export class Database {
     }
 
     public createEncounter(encounter: Encounter): void {
-        this.table(TableNames.encounter)
-            .push(serialize(encounter.encounterData))
-            .write();
+        this.table(TableNames.encounter).push(encounter).write();
     }
 
     public updateEncounter(encounter: Encounter): void {
         this.table(TableNames.encounter)
-            .find({ id: encounter.encounterData.id })
-            .assign({ ...serialize(encounter.encounterData) })
+            .find({ id: encounter.id })
+            .assign({ ...encounter })
             .write();
     }
 
-    public getEncounter(encounterId: string): Serializable<EncounterData> {
+    public getEncounter(encounterId: string): Encounter | undefined {
         return this.table(TableNames.encounter)
             .find({ id: encounterId })
             .value();
     }
 
-    public getEncounters(): Serializable<EncounterData>[] {
+    public getEncounters(): Encounter[] {
         return this.table(TableNames.encounter).value();
     }
 
@@ -70,14 +71,14 @@ export class Database {
 
     public addActorTemplate(actorTemplate: ActorTemplate): void {
         this.table(TableNames.actorTemplate)
-            .push({ ...serialize(actorTemplate) })
+            .push({ ...actorTemplate })
             .write();
     }
 
     public updateActorTemplate(actorTemplate: ActorTemplate): void {
         this.table(TableNames.actorTemplate)
             .find({ id: actorTemplate.id })
-            .assign({ ...serialize(actorTemplate) })
+            .assign({ ...actorTemplate })
             .write();
     }
 
@@ -101,3 +102,5 @@ export class Database {
             .write();
     }
 }
+
+export const getDatabaseConnection = createSingletonGetter(DatabaseConnection);

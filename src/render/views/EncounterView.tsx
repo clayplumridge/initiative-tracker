@@ -20,10 +20,15 @@ import { Encounter } from "@/render/state/Encounter";
 import * as React from "react";
 import { v4 as uuidv4 } from "uuid";
 import { Observer } from "@/render/components/Observer";
-import { Actor, ActorType, createActor, NpcActor, PlayerActor } from "@/models";
 import { IObservableValue } from "@/render/core/Observable";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
 import { Save } from "@material-ui/icons";
+import {
+    Actor,
+    ActorType,
+    NpcActor,
+    PlayerActor
+} from "@/render/database/models";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -48,28 +53,24 @@ export const EncounterView: React.FC<{ encounter: Encounter }> = ({
     };
 
     const addPlayer = () => {
-        encounter.addActor(
-            createActor({
-                name: "pc",
-                actorType: ActorType.PC,
-                initiativeModifier: 1,
-                id: uuidv4(),
-                uniqueName: true
-            })
-        );
+        encounter.addActor({
+            name: "pc",
+            actorType: ActorType.PC,
+            initiativeModifier: 1,
+            id: uuidv4(),
+            uniqueName: true
+        });
         handleClose();
     };
 
     const addNpc = () => {
-        encounter.addActor(
-            createActor({
-                name: "npc",
-                actorType: ActorType.NPC,
-                initiativeModifier: 2,
-                id: uuidv4(),
-                uniqueName: false
-            })
-        );
+        encounter.addActor({
+            name: "npc",
+            actorType: ActorType.NPC,
+            initiativeModifier: 2,
+            id: "test-npc",
+            uniqueName: false
+        });
         handleClose();
     };
 
