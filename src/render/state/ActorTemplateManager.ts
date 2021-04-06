@@ -1,16 +1,9 @@
 import { ActorTemplate } from "@/render/database/models";
-import {
-    DatabaseConnection,
-    getDatabaseConnection
-} from "@/render/database/DatabaseConnection";
+import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
 import { createSingletonGetter } from "@/util";
 
 class ActorTemplateManager {
-    private readonly database: DatabaseConnection;
-
-    constructor() {
-        this.database = getDatabaseConnection();
-    }
+    private readonly database = getDatabaseConnection();
 
     public addActorTemplate(actorTemplate: ActorTemplate): void {
         this.database.addActorTemplate(actorTemplate);

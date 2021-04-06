@@ -1,18 +1,13 @@
 import { Encounter } from "@/render/state/Encounter";
-import {
-    DatabaseConnection,
-    getDatabaseConnection
-} from "@/render/database/DatabaseConnection";
+import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
 import { IObservableValue, ObservableValue } from "@/render/core/Observable";
 import { createSingletonGetter } from "@/util";
 
 class EncounterManager {
-    private readonly database: DatabaseConnection;
-
+    private readonly database = getDatabaseConnection();
     private readonly currentEncounter: IObservableValue<Encounter>;
 
     constructor() {
-        this.database = getDatabaseConnection();
         const currentEncounterId: string = this.database.getCurrentEncounterId();
         if (currentEncounterId) {
             const currentEncounter: Encounter = this.getEncounter(

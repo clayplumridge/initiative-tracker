@@ -4,10 +4,12 @@ import {
     Schema,
     TableNames,
     RegistryKeys,
-    DatabaseObject
+    DatabaseObject,
+    DatabaseSchema
 } from "@/render/database/schema";
 import { DbDefaults } from "./defaults";
 import { createSingletonGetter } from "@/util";
+import { migrateToLatest } from "./migration";
 
 type TableKey = keyof Schema["tables"];
 type RegistryKey = keyof Schema["registry"];
@@ -19,12 +21,16 @@ const dataFile: string = "db.json";
 const adapter: AdapterSync<Schema> = new FileSync<Schema>(dataFile);
 const db = low(adapter);
 
-export class DatabaseConnection {
+class DatabaseConnection {
     constructor() {
         db.defaults(DbDefaults).write();
 
         if (db.get("version").value() < DbDefaults.version) {
-            // TODO: Run migrations
+            // Read the entire DB and migrate, then write it back out
+            // Seems like not a great paradigm, but I need to wrangle the type system more first
+            const old = db.value() as DatabaseSchema;
+            const afterMigration = migrateToLatest(old);
+            db.assign({ ...afterMigration }).write();
         }
     }
 
