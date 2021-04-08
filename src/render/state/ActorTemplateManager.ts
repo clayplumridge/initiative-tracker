@@ -1,12 +1,9 @@
-import { ActorTemplate } from "@/models";
-import { Database } from "@/render/database/Database";
+import { ActorTemplate } from "@/render/database/models";
+import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
+import { createSingletonGetter } from "@/util";
 
-export class ActorTemplateManager {
-    private readonly database: Database;
-
-    constructor(database: Database) {
-        this.database = database;
-    }
+class ActorTemplateManager {
+    private readonly database = getDatabaseConnection();
 
     public addActorTemplate(actorTemplate: ActorTemplate): void {
         this.database.addActorTemplate(actorTemplate);
@@ -30,3 +27,7 @@ export class ActorTemplateManager {
         return actorTemplates;
     }
 }
+
+export const getActorTemplateManager = createSingletonGetter(
+    ActorTemplateManager
+);

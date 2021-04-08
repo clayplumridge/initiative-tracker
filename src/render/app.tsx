@@ -8,9 +8,8 @@ import {
 import * as React from "react";
 import { theme } from "@/render/theme";
 import { EncounterView } from "@/render/views/EncounterView";
-import { Database } from "@/render/database/Database";
-import { EncounterManager } from "@/render/state/EncounterManager";
-import { ActorTemplateManager } from "@/render/state/ActorTemplateManager";
+import { getEncounterManager } from "@/render/state/EncounterManager";
+import { getActorTemplateManager } from "@/render/state/ActorTemplateManager";
 import { Observer } from "@/render/components/Observer";
 
 const useStyles = makeStyles(theme =>
@@ -21,13 +20,8 @@ const useStyles = makeStyles(theme =>
     })
 );
 
-const database: Database = new Database();
-
-const encounterManager: EncounterManager = new EncounterManager(database);
-
-const actorTemplateManager: ActorTemplateManager = new ActorTemplateManager(
-    database
-);
+const encounterManager = getEncounterManager();
+const actorTemplateManager = getActorTemplateManager();
 
 export default function App() {
     const styles = useStyles();
