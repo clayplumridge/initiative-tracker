@@ -10,7 +10,7 @@
         "dev": "concurrently --kill-others \"npm run react:dev\" \"npm run electron:dev\"",
         "start": "npm run build && electron dist/main.js",
         "test": "jest",
-        "lint": "eslint ./src/*"
+        "lint": "eslint \"src/**\""
     },
     "keywords": [],
     "author": "",
