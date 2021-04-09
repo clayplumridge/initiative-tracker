@@ -1,3 +1,4 @@
+import * as React from "react";
 import {
     Box,
     createStyles,
@@ -5,12 +6,11 @@ import {
     makeStyles,
     ThemeProvider
 } from "@material-ui/core";
-import * as React from "react";
-import { theme } from "@/render/theme";
 import { EncounterView } from "@/render/views/EncounterView";
-import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getActorTemplateManager } from "@/render/state/ActorTemplateManager";
+import { getEncounterManager } from "@/render/state/EncounterManager";
 import { Observer } from "@/render/components/Observer";
+import { theme } from "@/render/theme";
 
 const useStyles = makeStyles(theme =>
     createStyles({

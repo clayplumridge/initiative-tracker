@@ -1,3 +1,10 @@
+import * as React from "react";
+import {
+    Actor,
+    ActorType,
+    NpcActor,
+    PlayerActor
+} from "@/render/database/models";
 import {
     Box,
     Button,
@@ -17,18 +24,11 @@ import {
     TextField
 } from "@material-ui/core";
 import { Encounter } from "@/render/state/Encounter";
-import * as React from "react";
-import { v4 as uuidv4 } from "uuid";
-import { Observer } from "@/render/components/Observer";
 import { IObservableValue } from "@/render/core/Observable";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
+import { Observer } from "@/render/components/Observer";
 import { Save } from "@material-ui/icons";
-import {
-    Actor,
-    ActorType,
-    NpcActor,
-    PlayerActor
-} from "@/render/database/models";
+import { v4 as uuidv4 } from "uuid";
 
 const useStyles = makeStyles(theme =>
     createStyles({
