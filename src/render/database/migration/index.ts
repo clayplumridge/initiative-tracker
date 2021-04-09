@@ -1,6 +1,9 @@
-import { DatabaseSchema, Schema as LatestSchema } from "../schema";
-import { DbDefaults } from "../defaults";
-import { FromV1 as V1toV2 } from "../schema/V2";
+import {
+    DatabaseSchema,
+    Schema as LatestSchema
+} from "@/render/database/schema";
+import { DbDefaults } from "@/render/database/defaults";
+import { FromV1 as V1toV2 } from "@/render/database/schema/V2";
 
 export interface Migration<
     OldSchema extends DatabaseSchema,
