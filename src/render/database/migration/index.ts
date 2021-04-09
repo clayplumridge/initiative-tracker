@@ -1,5 +1,5 @@
-import { DbDefaults } from "../defaults";
 import { DatabaseSchema, Schema as LatestSchema } from "../schema";
+import { DbDefaults } from "../defaults";
 import { FromV1 as V1toV2 } from "../schema/V2";
 
 export interface Migration<
