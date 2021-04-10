@@ -8,7 +8,7 @@ class EncounterManager {
     private readonly currentEncounter: IObservableValue<Encounter>;
 
     constructor() {
-        const currentEncounterId: string = this.database.getCurrentEncounterId();
+        const currentEncounterId = this.database.getCurrentEncounterId();
         if (currentEncounterId) {
             const currentEncounter: Encounter = this.getEncounter(
                 currentEncounterId
