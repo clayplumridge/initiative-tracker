@@ -46,6 +46,10 @@ const DrawerItems: DrawerItemProps[] = [
     }
 ];
 
+const SelectedItemMap: Partial<Record<View, View>> = {
+    [View.CreateEncounter]: View.EncounterManagement
+};
+
 export const Frame: React.FC<{}> = ({ children }) => {
     const viewManager = getViewManager();
     const styles = useStyles();
@@ -69,6 +73,10 @@ export const Frame: React.FC<{}> = ({ children }) => {
                             <List>
                                 {DrawerItems.map(props => {
                                     const { id, icon: Icon, text } = props;
+                                    const selectedCheckId =
+                                        SelectedItemMap[selectedView] ||
+                                        selectedView;
+
                                     return (
                                         <ListItem
                                             button
@@ -76,7 +84,7 @@ export const Frame: React.FC<{}> = ({ children }) => {
                                             onClick={() =>
                                                 viewManager.onViewChanged(id)
                                             }
-                                            selected={id == selectedView}
+                                            selected={id == selectedCheckId}
                                         >
                                             <ListItemIcon>
                                                 <Icon />

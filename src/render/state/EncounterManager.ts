@@ -1,11 +1,20 @@
 import { createSingletonGetter } from "@/util";
 import { Encounter } from "@/render/state/Encounter";
+import { Encounter as EncounterData } from "@/render/database/models";
 import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
-import { IObservableValue, ObservableValue } from "@/render/core/Observable";
+import {
+    IObservableArray,
+    IObservableValue,
+    IReadonlyObservableArray,
+    ObservableArray,
+    ObservableValue
+} from "@/render/core/Observable";
+import { v4 } from "uuid";
 
 class EncounterManager {
     private readonly database = getDatabaseConnection();
-    private readonly currentEncounter: IObservableValue<Encounter>;
+    private readonly currentEncounter: IObservableValue<Encounter | undefined>;
+    private readonly encounters: IObservableArray<EncounterData>;
 
     constructor() {
         const currentEncounterId = this.database.getCurrentEncounterId();
@@ -17,10 +26,10 @@ class EncounterManager {
                 currentEncounter
             );
         } else {
-            this.currentEncounter = new ObservableValue<Encounter>(
-                this.createNewEncounter()
-            );
+            this.currentEncounter = new ObservableValue(undefined);
         }
+
+        this.encounters = new ObservableArray(this.database.getEncounters());
     }
 
     public loadEncounter(encounterId: string): void {
@@ -28,7 +37,7 @@ class EncounterManager {
         this.database.setCurrentEncounterId(encounterId);
     }
 
-    public getCurrentEncounter(): IObservableValue<Encounter> {
+    public getCurrentEncounter(): IObservableValue<Encounter | undefined> {
         return this.currentEncounter;
     }
 
@@ -43,20 +52,14 @@ class EncounterManager {
         }
     }
 
-    public getEncounters(): Map<String, String> {
-        const encounters: Map<String, String> = new Map<String, String>();
-        this.database
-            .getEncounters()
-            .map(encounter => encounters.set(encounter.name, encounter.id));
-
-        return encounters;
+    public getEncounters(): IReadonlyObservableArray<EncounterData> {
+        return this.encounters;
     }
 
-    public createNewEncounter(): Encounter {
-        const encounter: Encounter = new Encounter();
-        this.database.createEncounter(encounter.toDatabaseFormat());
-        this.database.setCurrentEncounterId(encounter.getId());
-        return encounter;
+    public createNewEncounter(data: Omit<EncounterData, "id">): Encounter {
+        const fullEncounter = { ...data, id: v4() };
+        this.database.createEncounter(fullEncounter);
+        return new Encounter(fullEncounter);
     }
 
     public deleteEncounter(encounterId: string): void {

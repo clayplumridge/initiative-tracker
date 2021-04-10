@@ -48,7 +48,13 @@ export const EncounterView: React.FC<{}> = () => {
                 encounter: encounterManager.getCurrentEncounter()
             }}
         >
-            {({ encounter }) => <EncounterViewContent encounter={encounter} />}
+            {({ encounter }) =>
+                encounter ? (
+                    <EncounterViewContent encounter={encounter} />
+                ) : (
+                    <></>
+                )
+            }
         </Observer>
     );
 };
