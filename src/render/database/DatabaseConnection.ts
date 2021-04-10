@@ -107,6 +107,10 @@ class DatabaseConnection {
             .set(RegistryKeys.currentEncounterId, encounterId)
             .write();
     }
+
+    public getLastViewId(): number | undefined {
+        return this.registryValue(RegistryKeys.lastViewId).value();
+    }
 }
 
 export const getDatabaseConnection = createSingletonGetter(DatabaseConnection);

@@ -24,6 +24,7 @@ import {
     TextField
 } from "@material-ui/core";
 import { Encounter } from "@/render/state/Encounter";
+import { getEncounterManager } from "@/render/state/EncounterManager";
 import { IObservableValue } from "@/render/core/Observable";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
 import { Observer } from "@/render/components/Observer";
@@ -38,7 +39,21 @@ const useStyles = makeStyles(theme =>
     })
 );
 
-export const EncounterView: React.FC<{ encounter: Encounter }> = ({
+export const EncounterView: React.FC<{}> = () => {
+    const encounterManager = getEncounterManager();
+
+    return (
+        <Observer
+            observed={{
+                encounter: encounterManager.getCurrentEncounter()
+            }}
+        >
+            {({ encounter }) => <EncounterViewContent encounter={encounter} />}
+        </Observer>
+    );
+};
+
+const EncounterViewContent: React.FC<{ encounter: Encounter }> = ({
     encounter
 }) => {
     const styles = useStyles();
