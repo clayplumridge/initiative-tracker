@@ -88,7 +88,9 @@ class DatabaseConnection {
             .write();
     }
 
-    public getActorTemplate(actorTemplateId: string): ActorTemplate {
+    public getActorTemplate(
+        actorTemplateId: string
+    ): ActorTemplate | undefined {
         return this.table(TableNames.actorTemplate)
             .find({ id: actorTemplateId })
             .value();
@@ -98,7 +100,7 @@ class DatabaseConnection {
         return this.table(TableNames.actorTemplate).value();
     }
 
-    public getCurrentEncounterId(): string {
+    public getCurrentEncounterId(): string | undefined {
         return this.registryValue(RegistryKeys.currentEncounterId).value();
     }
 
@@ -106,6 +108,10 @@ class DatabaseConnection {
         this.registry()
             .set(RegistryKeys.currentEncounterId, encounterId)
             .write();
+    }
+
+    public getLastViewId(): number | undefined {
+        return this.registryValue(RegistryKeys.lastViewId).value();
     }
 }
 

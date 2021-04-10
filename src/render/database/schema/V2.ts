@@ -7,7 +7,8 @@ export const enum TableNames {
 }
 
 export const enum RegistryKeys {
-    currentEncounterId = "currentEncounterId"
+    currentEncounterId = "currentEncounterId",
+    lastViewId = "lastViewId"
 }
 
 export interface Schema extends DatabaseSchema {
@@ -18,6 +19,7 @@ export interface Schema extends DatabaseSchema {
     };
     registry: {
         [RegistryKeys.currentEncounterId]?: string;
+        [RegistryKeys.lastViewId]?: number;
     };
 }
 

@@ -13,7 +13,9 @@ class ActorTemplateManager {
         this.database.updateActorTemplate(actorTemplate);
     }
 
-    public getActorTemplate(actorTemplateId: string): ActorTemplate {
+    public getActorTemplate(
+        actorTemplateId: string
+    ): ActorTemplate | undefined {
         return this.database.getActorTemplate(actorTemplateId);
     }
 

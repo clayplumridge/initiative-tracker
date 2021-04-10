@@ -1,3 +1,9 @@
+import * as React from "react";
+import {
+    IReadonlyObservableValue,
+    ObservableValue
+} from "./render/core/Observable";
+
 export type UnwrapArray<T> = T extends Array<infer U> ? U : T;
 
 export function getRandomInt(min: number, max: number): number {
@@ -16,4 +22,11 @@ export function createSingletonGetter<T>(constructor: new () => T): () => T {
 
         return memo;
     };
+}
+
+export function useObservable<T>(
+    initialValue: T
+): [IReadonlyObservableValue<T>, (newValue: T) => void] {
+    const [val] = React.useState(new ObservableValue<T>(initialValue));
+    return [val, newValue => (val.value = newValue)];
 }
