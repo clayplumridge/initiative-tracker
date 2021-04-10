@@ -60,26 +60,35 @@ export const Frame: React.FC<{}> = ({ children }) => {
                     mobileOpen={mobileIsOpen}
                     mobileOnClose={() => setMobileIsOpen(!mobileIsOpen.value)}
                 >
-                    <List>
-                        {DrawerItems.map(props => {
-                            const { id, icon: Icon, text } = props;
-                            return (
-                                <ListItem
-                                    button
-                                    key={id}
-                                    onClick={() =>
-                                        viewManager.onViewChanged(id)
-                                    }
-                                >
-                                    <ListItemIcon>
-                                        <Icon />
-                                    </ListItemIcon>
+                    <Observer
+                        observed={{
+                            selectedView: viewManager.getCurrentView()
+                        }}
+                    >
+                        {({ selectedView }) => (
+                            <List>
+                                {DrawerItems.map(props => {
+                                    const { id, icon: Icon, text } = props;
+                                    return (
+                                        <ListItem
+                                            button
+                                            key={id}
+                                            onClick={() =>
+                                                viewManager.onViewChanged(id)
+                                            }
+                                            selected={id == selectedView}
+                                        >
+                                            <ListItemIcon>
+                                                <Icon />
+                                            </ListItemIcon>
 
-                                    <ListItemText primary={text} />
-                                </ListItem>
-                            );
-                        })}
-                    </List>
+                                            <ListItemText primary={text} />
+                                        </ListItem>
+                                    );
+                                })}
+                            </List>
+                        )}
+                    </Observer>
                 </ResponsiveDrawer>
 
                 <Box
