@@ -1,8 +1,8 @@
 import {
     IObservableArray,
     IObservableValue,
-    ObservableValue,
-    ObservableArray
+    ObservableArray,
+    ObservableValue
 } from "@/render/core/Observable";
 
 type UnwrappedObservableChain<T> = T extends IObservableArray<infer U>

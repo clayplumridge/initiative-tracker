@@ -1,7 +1,7 @@
+import { createSingletonGetter } from "@/util";
 import { Encounter } from "@/render/state/Encounter";
 import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
 import { IObservableValue, ObservableValue } from "@/render/core/Observable";
-import { createSingletonGetter } from "@/util";
 
 class EncounterManager {
     private readonly database = getDatabaseConnection();

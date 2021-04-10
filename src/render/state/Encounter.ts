@@ -1,4 +1,6 @@
 import { Actor, ActorTemplate } from "@/render/database/models";
+import { DatabaseObject, TableNames } from "@/render/database/schema";
+import { getRandomInt } from "@/util";
 import {
     IObservableValue,
     IReadonlyObservableArray,
@@ -6,10 +8,8 @@ import {
     ObservableArray,
     ObservableValue
 } from "@/render/core/Observable";
-import { getRandomInt } from "@/util";
+import { serialize } from "@/render/database/Serialize";
 import { v4 as uuidv4 } from "uuid";
-import { DatabaseObject, TableNames } from "@/render/database/schema";
-import { serialize } from "../database/Serialize";
 
 type DatabaseEncounter = DatabaseObject<TableNames.encounter>;
 

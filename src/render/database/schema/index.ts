@@ -27,9 +27,9 @@ export type DatabaseObject<
 
 /** V2 */
 import {
+    RegistryKeys as V2RegistryKeys,
     Schema as V2Schema,
-    TableNames as V2TableNames,
-    RegistryKeys as V2RegistryKeys
+    TableNames as V2TableNames
 } from "./V2";
 
 export { V2Schema, V2TableNames, V2RegistryKeys };

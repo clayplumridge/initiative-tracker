@@ -1,4 +1,4 @@
-import { Schema, TableNames, RegistryKeys } from "../schema";
+import { RegistryKeys, Schema, TableNames } from "@/render/database/schema";
 
 export const DbDefaults: Schema = {
     version: 2,
