@@ -2,7 +2,6 @@ import { Actor, ActorTemplate } from "@/render/database/models";
 import { DatabaseObject, TableNames } from "@/render/database/schema";
 import { getRandomInt } from "@/util";
 import {
-    IObservableValue,
     IReadonlyObservableArray,
     IReadonlyObservableValue,
     ObservableArray,

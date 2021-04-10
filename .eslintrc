@@ -1,7 +1,11 @@
 // https://eslint.org/docs/2.0.0/user-guide/configuring
 {
     "parser": "@typescript-eslint/parser",
-    "plugins": ["@typescript-eslint", "sort-imports-es6-autofix"],
+    "plugins": [
+        "@typescript-eslint",
+        "sort-imports-es6-autofix",
+        "unused-imports"
+    ],
     "rules": {
         // Statements must end with semicolons (has autofix)
         "semi": ["error", "always"],
@@ -21,6 +25,7 @@
             {
                 "patterns": ["../*"]
             }
-        ]
+        ],
+        "unused-imports/no-unused-imports": "error"
     }
 }
