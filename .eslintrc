@@ -4,7 +4,8 @@
     "plugins": [
         "@typescript-eslint",
         "sort-imports-es6-autofix",
-        "unused-imports"
+        "unused-imports",
+        "react"
     ],
     "rules": {
         // Statements must end with semicolons (has autofix)
@@ -26,6 +27,10 @@
                 "patterns": ["../*"]
             }
         ],
-        "unused-imports/no-unused-imports": "error"
+        "unused-imports/no-unused-imports": "error",
+        "react/jsx-sort-props": [
+            "error",
+            { "ignoreCase": true, "shorthandFirst": true }
+        ]
     }
 }
