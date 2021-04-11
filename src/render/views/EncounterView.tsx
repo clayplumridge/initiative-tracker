@@ -149,11 +149,11 @@ const EncounterViewContent: React.FC<{ encounter: Encounter }> = ({
                 Add Player or Monster
             </Button>
             <Menu
-                id="simple-menu"
-                anchorEl={anchorEl}
                 keepMounted
-                open={Boolean(anchorEl)}
+                anchorEl={anchorEl}
+                id="simple-menu"
                 onClose={handleClose}
+                open={Boolean(anchorEl)}
             >
                 <MenuItem onClick={addPlayer}>Add Player</MenuItem>
                 <MenuItem onClick={addNpc}>Add Monster</MenuItem>
