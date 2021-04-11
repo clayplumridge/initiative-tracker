@@ -6,11 +6,11 @@ import {
     makeStyles,
     Typography
 } from "@material-ui/core";
+import { Cancel as CancelIcon, Save as SaveIcon } from "@material-ui/icons";
+import { css, useObservable } from "@/util";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
-import { Save as SaveIcon } from "@material-ui/icons";
 import { TextField } from "@/render/components/TextField";
-import { useObservable } from "@/util";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -19,6 +19,9 @@ const useStyles = makeStyles(theme =>
         },
         firstButton: {
             marginLeft: "auto"
+        },
+        notLastButton: {
+            marginRight: theme.spacing(1)
         }
     })
 );
@@ -34,6 +37,10 @@ export const CreateEncounterView: React.FC<{}> = () => {
             actors: []
         });
 
+        viewManager.onViewChanged(View.EncounterManagement);
+    };
+
+    const cancel = () => {
         viewManager.onViewChanged(View.EncounterManagement);
     };
 
@@ -53,13 +60,22 @@ export const CreateEncounterView: React.FC<{}> = () => {
                 flexDirection="row"
             >
                 <Button
-                    className={styles.firstButton}
+                    className={css(styles.firstButton, styles.notLastButton)}
                     color="primary"
                     onClick={create}
                     startIcon={<SaveIcon />}
                     variant="contained"
                 >
                     <Typography>Save</Typography>
+                </Button>
+
+                <Button
+                    color="secondary"
+                    onClick={cancel}
+                    startIcon={<CancelIcon />}
+                    variant="contained"
+                >
+                    <Typography>Cancel</Typography>
                 </Button>
             </Box>
         </Box>
