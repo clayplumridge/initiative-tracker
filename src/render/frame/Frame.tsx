@@ -57,8 +57,8 @@ export const Frame: React.FC<{}> = ({ children }) => {
                 <CssBaseline />
 
                 <ResponsiveDrawer
-                    mobileOpen={mobileIsOpen}
                     mobileOnClose={() => setMobileIsOpen(!mobileIsOpen.value)}
+                    mobileOpen={mobileIsOpen}
                 >
                     <Observer
                         observed={{
@@ -133,16 +133,16 @@ const ResponsiveDrawer: React.FC<{
                 <Observer observed={{ open }}>
                     {({ open }) => (
                         <Drawer
-                            variant="temporary"
                             anchor="left"
-                            open={open}
-                            onClose={onClose}
                             classes={{
                                 paper: styles.drawerPaper
                             }}
                             ModalProps={{
                                 keepMounted: true // Better open performance on mobile
                             }}
+                            onClose={onClose}
+                            open={open}
+                            variant="temporary"
                         >
                             {children}
                         </Drawer>
@@ -151,11 +151,11 @@ const ResponsiveDrawer: React.FC<{
             </Hidden>
             <Hidden xsDown implementation="css">
                 <Drawer
-                    variant="permanent"
+                    open
                     classes={{
                         paper: styles.drawerPaper
                     }}
-                    open
+                    variant="permanent"
                 >
                     {children}
                 </Drawer>
