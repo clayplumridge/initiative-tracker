@@ -30,3 +30,11 @@ export function useObservable<T>(
     const [val] = React.useState(new ObservableValue<T>(initialValue));
     return [val, newValue => (val.value = newValue)];
 }
+
+export function css(...items: Array<string | undefined>) {
+    return items.filter(isDefined).join(" ");
+}
+
+function isDefined<T>(obj: T | undefined): obj is T {
+    return obj != undefined;
+}

@@ -8,6 +8,13 @@ export const CreateEncounterView: React.FC<{}> = () => {
     const encounterManager = getEncounterManager();
     const [name, setName] = useObservable("");
 
+    const create = () => {
+        encounterManager.createNewEncounter({
+            name: name.value,
+            actors: []
+        });
+    };
+
     return (
         <Box display="flex" flexDirection="col">
             <TextField
