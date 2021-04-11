@@ -18,12 +18,10 @@ class EncounterManager {
 
     constructor() {
         const currentEncounterId = this.database.getCurrentEncounterId();
+
         if (currentEncounterId) {
-            const currentEncounter: Encounter = this.getEncounter(
-                currentEncounterId
-            );
-            this.currentEncounter = new ObservableValue<Encounter>(
-                currentEncounter
+            this.currentEncounter = new ObservableValue<Encounter | undefined>(
+                this.getEncounter(currentEncounterId)
             );
         } else {
             this.currentEncounter = new ObservableValue(undefined);
@@ -41,14 +39,14 @@ class EncounterManager {
         return this.currentEncounter;
     }
 
-    private getEncounter(encounterId: string): Encounter {
+    private getEncounter(encounterId: string): Encounter | undefined {
         const data = this.database.getEncounter(encounterId);
 
         if (data) {
             const encounter: Encounter = new Encounter(data);
             return encounter;
         } else {
-            throw "No encounter found with that identifier";
+            return undefined;
         }
     }
 
@@ -56,14 +54,17 @@ class EncounterManager {
         return this.encounters;
     }
 
-    public createNewEncounter(data: Omit<EncounterData, "id">): Encounter {
+    public createNewEncounter(data: Omit<EncounterData, "id">): void {
         const fullEncounter = { ...data, id: v4() };
         this.database.createEncounter(fullEncounter);
-        return new Encounter(fullEncounter);
+        this.encounters.push(fullEncounter);
     }
 
     public deleteEncounter(encounterId: string): void {
         this.database.removeEncounter(encounterId);
+        this.encounters.value = this.encounters.value.filter(
+            x => x.id != encounterId
+        );
     }
 }
 

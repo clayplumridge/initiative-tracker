@@ -1,23 +1,30 @@
 import * as React from "react";
-import { Add as AddIcon } from "@material-ui/icons";
+import {
+    Add as AddIcon,
+    Delete as DeleteIcon,
+    MoreVert as MoreVertIcon
+} from "@material-ui/icons";
 import {
     Box,
     createStyles,
     Fab,
     Grid,
+    IconButton,
+    ListItemIcon,
     makeStyles,
-    Paper
+    Menu,
+    MenuItem,
+    Paper,
+    Typography
 } from "@material-ui/core";
+import { Encounter } from "@/render/database/models";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
 import { Observer } from "@/render/components/Observer";
+import { useObservable } from "@/util";
 
 const useStyles = makeStyles(theme =>
     createStyles({
-        gridItemPaper: {
-            padding: theme.spacing(2),
-            color: theme.palette.text.secondary
-        },
         fab: {
             position: "absolute",
             bottom: theme.spacing(2),
@@ -33,7 +40,7 @@ export const EncounterManagementView: React.FC<{}> = () => {
 
     return (
         <Box display="flex" flexDirection="column">
-            <Grid container spacing={3}>
+            <Grid container spacing={1}>
                 <Observer
                     observed={{ encounters: encounterManager.getEncounters() }}
                 >
@@ -41,11 +48,10 @@ export const EncounterManagementView: React.FC<{}> = () => {
                         return (
                             <>
                                 {encounters.map(x => (
-                                    <Grid item>
-                                        <Paper className={styles.gridItemPaper}>
-                                            {x.name}
-                                        </Paper>
-                                    </Grid>
+                                    <EncounterGridItem
+                                        encounter={x}
+                                        key={x.id}
+                                    />
                                 ))}
                             </>
                         );
@@ -61,5 +67,77 @@ export const EncounterManagementView: React.FC<{}> = () => {
                 <AddIcon />
             </Fab>
         </Box>
+    );
+};
+
+const useItemStyles = makeStyles(theme =>
+    createStyles({
+        gridItemPaper: {
+            padding: theme.spacing(2),
+            color: theme.palette.text.secondary
+        },
+        flexCenteredRow: {
+            alignItems: "center"
+        },
+        menuButton: {
+            marginLeft: "auto"
+        }
+    })
+);
+
+const EncounterGridItem: React.FC<{ encounter: Encounter }> = ({
+    encounter
+}) => {
+    const encounterManager = getEncounterManager();
+    const styles = useItemStyles();
+    const [anchorEl, setAnchorEl] = useObservable<null | HTMLElement>(null);
+
+    return (
+        <Grid item>
+            <Paper className={styles.gridItemPaper}>
+                <Box display="flex" flexDirection="column">
+                    <Box
+                        className={styles.flexCenteredRow}
+                        display="flex"
+                        flexDirection="row"
+                    >
+                        <Typography>{encounter.name}</Typography>
+
+                        <IconButton
+                            className={styles.menuButton}
+                            onClick={ev => setAnchorEl(ev.currentTarget)}
+                        >
+                            <MoreVertIcon />
+                        </IconButton>
+
+                        <Observer observed={{ anchorEl }}>
+                            {({ anchorEl }) => (
+                                <Menu
+                                    keepMounted
+                                    anchorEl={anchorEl}
+                                    onClose={() => setAnchorEl(null)}
+                                    open={Boolean(anchorEl)}
+                                >
+                                    <MenuItem
+                                        onClick={() =>
+                                            encounterManager.deleteEncounter(
+                                                encounter.id
+                                            )
+                                        }
+                                    >
+                                        <ListItemIcon>
+                                            <DeleteIcon />
+                                        </ListItemIcon>
+                                        <Typography noWrap variant="inherit">
+                                            Delete
+                                        </Typography>
+                                    </MenuItem>
+                                </Menu>
+                            )}
+                        </Observer>
+                    </Box>
+                </Box>
+            </Paper>
+        </Grid>
     );
 };
