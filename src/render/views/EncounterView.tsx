@@ -27,7 +27,7 @@ import { Encounter } from "@/render/state/Encounter";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { IObservableValue } from "@/render/core/Observable";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
-import { Observer } from "@/render/components/Observer";
+import { Observer } from "@/render/components";
 import { Save } from "@material-ui/icons";
 import { v4 as uuidv4 } from "uuid";
 

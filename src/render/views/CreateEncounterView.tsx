@@ -10,7 +10,7 @@ import { Cancel as CancelIcon, Save as SaveIcon } from "@material-ui/icons";
 import { css, useObservable } from "@/util";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
-import { TextField } from "@/render/components/TextField";
+import { TextField } from "@/render/components";
 
 const useStyles = makeStyles(theme =>
     createStyles({
