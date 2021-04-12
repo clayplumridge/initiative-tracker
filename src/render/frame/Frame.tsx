@@ -15,7 +15,7 @@ import {
 } from "@material-ui/core";
 import { getViewManager, View } from "@/render/state/ViewManager";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
-import { Observer } from "@/render/components/Observer";
+import { Observer } from "@/render/components";
 import { theme } from "@/render/theme";
 import { useObservable } from "@/util";
 
