@@ -4,7 +4,7 @@ import { EncounterManagementView } from "./views/EncounterManagementView";
 import { EncounterView } from "@/render/views/EncounterView";
 import { Frame } from "./frame/Frame";
 import { getViewManager, View } from "./state/ViewManager";
-import { Observer } from "@/render/components/Observer";
+import { Observer } from "@/render/components";
 
 export default function App() {
     const viewManager = getViewManager();

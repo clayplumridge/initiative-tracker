@@ -12,7 +12,6 @@ import {
     IconButton,
     ListItemIcon,
     makeStyles,
-    Menu,
     MenuItem,
     Paper,
     Typography
@@ -20,7 +19,7 @@ import {
 import { Encounter } from "@/render/database/models";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
-import { Observer } from "@/render/components/Observer";
+import { Menu, Observer } from "@/render/components";
 import { useObservable } from "@/util";
 
 const useStyles = makeStyles(theme =>
@@ -110,31 +109,26 @@ const EncounterGridItem: React.FC<{ encounter: Encounter }> = ({
                             <MoreVertIcon />
                         </IconButton>
 
-                        <Observer observed={{ anchorEl }}>
-                            {({ anchorEl }) => (
-                                <Menu
-                                    keepMounted
-                                    anchorEl={anchorEl}
-                                    onClose={() => setAnchorEl(null)}
-                                    open={Boolean(anchorEl)}
-                                >
-                                    <MenuItem
-                                        onClick={() =>
-                                            encounterManager.deleteEncounter(
-                                                encounter.id
-                                            )
-                                        }
-                                    >
-                                        <ListItemIcon>
-                                            <DeleteIcon />
-                                        </ListItemIcon>
-                                        <Typography noWrap variant="inherit">
-                                            Delete
-                                        </Typography>
-                                    </MenuItem>
-                                </Menu>
-                            )}
-                        </Observer>
+                        <Menu
+                            keepMounted
+                            anchorEl={anchorEl}
+                            onClose={() => setAnchorEl(null)}
+                        >
+                            <MenuItem
+                                onClick={() =>
+                                    encounterManager.deleteEncounter(
+                                        encounter.id
+                                    )
+                                }
+                            >
+                                <ListItemIcon>
+                                    <DeleteIcon />
+                                </ListItemIcon>
+                                <Typography noWrap variant="inherit">
+                                    Delete
+                                </Typography>
+                            </MenuItem>
+                        </Menu>
                     </Box>
                 </Box>
             </Paper>
