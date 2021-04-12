@@ -68,7 +68,7 @@ class DatabaseConnection {
     }
 
     public getEncounters(): Encounter[] {
-        return this.table(TableNames.encounter).value();
+        return [...this.table(TableNames.encounter).value()];
     }
 
     public removeEncounter(encounterId: string): void {
@@ -97,7 +97,7 @@ class DatabaseConnection {
     }
 
     public getActorTemplates(): ActorTemplate[] {
-        return this.table(TableNames.actorTemplate).value();
+        return [...this.table(TableNames.actorTemplate).value()];
     }
 
     public getCurrentEncounterId(): string | undefined {

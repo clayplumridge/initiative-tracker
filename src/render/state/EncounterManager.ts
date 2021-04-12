@@ -1,26 +1,33 @@
 import { createSingletonGetter } from "@/util";
 import { Encounter } from "@/render/state/Encounter";
+import { Encounter as EncounterData } from "@/render/database/models";
 import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
-import { IObservableValue, ObservableValue } from "@/render/core/Observable";
+import {
+    IObservableArray,
+    IObservableValue,
+    IReadonlyObservableArray,
+    ObservableArray,
+    ObservableValue
+} from "@/render/core/Observable";
+import { v4 } from "uuid";
 
 class EncounterManager {
     private readonly database = getDatabaseConnection();
-    private readonly currentEncounter: IObservableValue<Encounter>;
+    private readonly currentEncounter: IObservableValue<Encounter | undefined>;
+    private readonly encounters: IObservableArray<EncounterData>;
 
     constructor() {
         const currentEncounterId = this.database.getCurrentEncounterId();
+
         if (currentEncounterId) {
-            const currentEncounter: Encounter = this.getEncounter(
-                currentEncounterId
-            );
-            this.currentEncounter = new ObservableValue<Encounter>(
-                currentEncounter
+            this.currentEncounter = new ObservableValue<Encounter | undefined>(
+                this.getEncounter(currentEncounterId)
             );
         } else {
-            this.currentEncounter = new ObservableValue<Encounter>(
-                this.createNewEncounter()
-            );
+            this.currentEncounter = new ObservableValue(undefined);
         }
+
+        this.encounters = new ObservableArray(this.database.getEncounters());
     }
 
     public loadEncounter(encounterId: string): void {
@@ -28,39 +35,36 @@ class EncounterManager {
         this.database.setCurrentEncounterId(encounterId);
     }
 
-    public getCurrentEncounter(): IObservableValue<Encounter> {
+    public getCurrentEncounter(): IObservableValue<Encounter | undefined> {
         return this.currentEncounter;
     }
 
-    private getEncounter(encounterId: string): Encounter {
+    private getEncounter(encounterId: string): Encounter | undefined {
         const data = this.database.getEncounter(encounterId);
 
         if (data) {
             const encounter: Encounter = new Encounter(data);
             return encounter;
         } else {
-            throw "No encounter found with that identifier";
+            return undefined;
         }
     }
 
-    public getEncounters(): Map<String, String> {
-        const encounters: Map<String, String> = new Map<String, String>();
-        this.database
-            .getEncounters()
-            .map(encounter => encounters.set(encounter.name, encounter.id));
-
-        return encounters;
+    public getEncounters(): IReadonlyObservableArray<EncounterData> {
+        return this.encounters;
     }
 
-    public createNewEncounter(): Encounter {
-        const encounter: Encounter = new Encounter();
-        this.database.createEncounter(encounter.toDatabaseFormat());
-        this.database.setCurrentEncounterId(encounter.getId());
-        return encounter;
+    public createNewEncounter(data: Omit<EncounterData, "id">): void {
+        const fullEncounter = { ...data, id: v4() };
+        this.database.createEncounter(fullEncounter);
+        this.encounters.push(fullEncounter);
     }
 
     public deleteEncounter(encounterId: string): void {
         this.database.removeEncounter(encounterId);
+        this.encounters.value = this.encounters.value.filter(
+            x => x.id != encounterId
+        );
     }
 }
 

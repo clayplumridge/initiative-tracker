@@ -1,4 +1,5 @@
 import * as React from "react";
+import { CreateEncounterView } from "./views/CreateEncounterView";
 import { EncounterManagementView } from "./views/EncounterManagementView";
 import { EncounterView } from "@/render/views/EncounterView";
 import { Frame } from "./frame/Frame";
@@ -26,5 +27,6 @@ export default function App() {
 
 const ViewMap: Record<View, React.FC<{}>> = {
     [View.Encounter]: EncounterView,
-    [View.EncounterManagement]: EncounterManagementView
+    [View.EncounterManagement]: EncounterManagementView,
+    [View.CreateEncounter]: CreateEncounterView
 };
