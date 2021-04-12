@@ -93,7 +93,7 @@ const EncounterGridItem: React.FC<{ encounter: Encounter }> = ({
     const [anchorEl, setAnchorEl] = useObservable<null | HTMLElement>(null);
 
     return (
-        <Grid item>
+        <Grid item sm={6} xs={12}>
             <Paper className={styles.gridItemPaper}>
                 <Box display="flex" flexDirection="column">
                     <Box
