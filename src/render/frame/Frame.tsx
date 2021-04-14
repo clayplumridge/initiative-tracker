@@ -1,17 +1,24 @@
 import * as React from "react";
-import { Add as AddIcon, People as PeopleIcon } from "@material-ui/icons";
 import {
+    Add as AddIcon,
+    Menu as MenuIcon,
+    People as PeopleIcon
+} from "@material-ui/icons";
+import {
+    AppBar,
     Box,
     createStyles,
     CssBaseline,
     Drawer,
     Hidden,
+    IconButton,
     List,
     ListItem,
     ListItemIcon,
     ListItemText,
     makeStyles,
-    ThemeProvider
+    ThemeProvider,
+    Toolbar
 } from "@material-ui/core";
 import { getViewManager, View } from "@/render/state/ViewManager";
 import { IReadonlyObservableValue } from "@/render/core/Observable";
@@ -19,11 +26,20 @@ import { Observer } from "@/render/components";
 import { theme } from "@/render/theme";
 import { useObservable } from "@/util";
 
+const drawerWidth = 240;
 const useStyles = makeStyles(theme =>
     createStyles({
         root: {
             height: "100%"
-        }
+        },
+        appbar: {
+            [theme.breakpoints.up("sm")]: {
+                width: `calc(100% - ${drawerWidth}px)`,
+                marginLeft: drawerWidth
+            }
+        },
+        // necessary for content to be below app bar
+        toolbar: theme.mixins.toolbar
     })
 );
 
@@ -59,6 +75,20 @@ export const Frame: React.FC<{}> = ({ children }) => {
         <ThemeProvider theme={theme}>
             <Box className={styles.root} display="flex">
                 <CssBaseline />
+
+                <AppBar className={styles.appbar} position="fixed">
+                    <Toolbar>
+                        <Hidden smUp implementation="css">
+                            <IconButton
+                                onClick={() =>
+                                    setMobileIsOpen(!mobileIsOpen.value)
+                                }
+                            >
+                                <MenuIcon />
+                            </IconButton>
+                        </Hidden>
+                    </Toolbar>
+                </AppBar>
 
                 <ResponsiveDrawer
                     mobileOnClose={() => setMobileIsOpen(!mobileIsOpen.value)}
@@ -106,14 +136,13 @@ export const Frame: React.FC<{}> = ({ children }) => {
                     flexGrow={1}
                     p={1}
                 >
+                    <div className={styles.toolbar} />
                     {children}
                 </Box>
             </Box>
         </ThemeProvider>
     );
 };
-
-const drawerWidth = 240;
 
 const useDrawerStyles = makeStyles(theme =>
     createStyles({
