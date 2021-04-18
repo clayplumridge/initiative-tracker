@@ -1,4 +1,7 @@
-import { createSingletonGetter } from "@/util";
+import low, { AdapterSync } from "lowdb";
+import FileSync from "lowdb/adapters/FileSync";
+import { DbDefaults } from "./defaults";
+import { migrateToLatest } from "./migration";
 import {
     DatabaseObject,
     DatabaseSchema,
@@ -6,10 +9,7 @@ import {
     Schema,
     TableNames
 } from "@/render/database/schema";
-import { DbDefaults } from "./defaults";
-import { migrateToLatest } from "./migration";
-import FileSync from "lowdb/adapters/FileSync";
-import low, { AdapterSync } from "lowdb";
+import { createSingletonGetter } from "@/util";
 
 type TableKey = keyof Schema["tables"];
 type RegistryKey = keyof Schema["registry"];

@@ -1,10 +1,10 @@
-import { createSingletonGetter } from "@/util";
-import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
 import {
     IObservableValue,
     IReadonlyObservableValue,
     ObservableValue
 } from "@/render/core/Observable";
+import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
+import { createSingletonGetter } from "@/util";
 
 class ViewManager {
     private readonly currentView: IObservableValue<View>;

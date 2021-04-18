@@ -5,9 +5,9 @@ import {
     TextField as MuiTextField,
     TextFieldProps as MuiTextFieldProps
 } from "@material-ui/core";
-import { css } from "@/util";
-import { IObservableValue } from "@/render/core/Observable";
 import { Observer } from "./Observer";
+import { IObservableValue } from "@/render/core/Observable";
+import { css } from "@/util";
 
 export interface TextFieldProps
     extends Omit<MuiTextFieldProps, "onChange" | "value"> {

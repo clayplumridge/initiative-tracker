@@ -1,10 +1,5 @@
 import * as React from "react";
 import {
-    Add as AddIcon,
-    Menu as MenuIcon,
-    People as PeopleIcon
-} from "@material-ui/icons";
-import {
     AppBar,
     Box,
     createStyles,
@@ -20,9 +15,14 @@ import {
     ThemeProvider,
     Toolbar
 } from "@material-ui/core";
-import { getViewManager, View } from "@/render/state/ViewManager";
-import { IReadonlyObservableValue } from "@/render/core/Observable";
+import {
+    Add as AddIcon,
+    Menu as MenuIcon,
+    People as PeopleIcon
+} from "@material-ui/icons";
 import { Observer } from "@/render/components";
+import { IReadonlyObservableValue } from "@/render/core/Observable";
+import { getViewManager, View } from "@/render/state/ViewManager";
 import { theme } from "@/render/theme";
 import { useObservable } from "@/util";
 

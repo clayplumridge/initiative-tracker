@@ -3,23 +3,16 @@
     "parser": "@typescript-eslint/parser",
     "plugins": [
         "@typescript-eslint",
-        "sort-imports-es6-autofix",
         "unused-imports",
         "react",
-        "sort-keys-fix"
+        "sort-keys-fix",
+        "import"
     ],
     "rules": {
         // Statements must end with semicolons (has autofix)
         "semi": ["error", "always"],
         // Double quotes for strings (has autofix)
         "quotes": ["error", "double"],
-        // Sort imports (has autofix)
-        "sort-imports-es6-autofix/sort-imports-es6": [
-            "error",
-            {
-                "ignoreCase": true
-            }
-        ],
         // No using relative paths for imports from parent directories
         // No autofix; trying to find one that works
         "no-restricted-imports": [
@@ -35,6 +28,32 @@
             "error",
             { "ignoreCase": true, "shorthandFirst": true }
         ],
-        "sort-keys-fix/sort-keys-fix": "error"
+        // Forces objects to have alphabetical keys
+        "sort-keys-fix/sort-keys-fix": "error",
+        // Sort individual imports within a block eg { Menu, Observer }
+        "sort-imports": [
+            "error",
+            { "ignoreCase": true, "ignoreDeclarationSort": true }
+        ],
+        // Import grouping
+        "import/order": [
+            "error",
+            {
+                "alphabetize": { "order": "asc", "caseInsensitive": true },
+                "newlines-between": "never",
+                "pathGroups": [
+                    {
+                        "pattern": "@/**",
+                        "group": "internal"
+                    },
+                    {
+                        "pattern": "react",
+                        "group": "external",
+                        "position": "before"
+                    }
+                ],
+                "pathGroupsExcludedImportTypes": []
+            }
+        ]
     }
 }

@@ -1,10 +1,5 @@
 import * as React from "react";
 import {
-    Add as AddIcon,
-    Delete as DeleteIcon,
-    MoreVert as MoreVertIcon
-} from "@material-ui/icons";
-import {
     Box,
     createStyles,
     Fab,
@@ -16,10 +11,15 @@ import {
     Paper,
     Typography
 } from "@material-ui/core";
+import {
+    Add as AddIcon,
+    Delete as DeleteIcon,
+    MoreVert as MoreVertIcon
+} from "@material-ui/icons";
+import { Menu, Observer } from "@/render/components";
 import { Encounter } from "@/render/database/models";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
-import { Menu, Observer } from "@/render/components";
 import { useObservable } from "@/util";
 
 const useStyles = makeStyles(theme =>

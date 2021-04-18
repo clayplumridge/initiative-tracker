@@ -1,10 +1,10 @@
 import * as React from "react";
-import { CreateEncounterView } from "./views/CreateEncounterView";
-import { EncounterManagementView } from "./views/EncounterManagementView";
-import { EncounterView } from "@/render/views/EncounterView";
 import { Frame } from "./frame/Frame";
 import { getViewManager, View } from "./state/ViewManager";
+import { CreateEncounterView } from "./views/CreateEncounterView";
+import { EncounterManagementView } from "./views/EncounterManagementView";
 import { Observer } from "@/render/components";
+import { EncounterView } from "@/render/views/EncounterView";
 
 export default function App() {
     const viewManager = getViewManager();
