@@ -1,20 +1,20 @@
-import { DatabaseSchema, V1Schema, V2Schema } from "@/render/database/schema";
 import { DbDefaults } from "@/render/database/defaults";
 import { migrateToLatest } from "@/render/database/migration";
+import { DatabaseSchema, V1Schema, V2Schema } from "@/render/database/schema";
 
 const v1Schema: V1Schema = {
-    version: 1,
+    registry: {},
     tables: {},
-    registry: {}
+    version: 1
 };
 
 const v2Schema: V2Schema = {
-    version: 2,
+    registry: {},
     tables: {
         actorTemplate: [],
         encounter: []
     },
-    registry: {}
+    version: 2
 };
 
 // Using this instead of Record<number, DatabaseSchema> so we can use describe.each below

@@ -57,17 +57,17 @@ test("Serializes observable arrays of observables correctly", () => {
 
 test("Serializes objects with observable keys correctly", () => {
     const obj = {
-        testNotObsVal: 12,
-        testObsVal: new ObservableValue(13),
         testNotObsArr: ["one", "two", "three"],
-        testObsArr: new ObservableArray(["four", "five", "six"])
+        testNotObsVal: 12,
+        testObsArr: new ObservableArray(["four", "five", "six"]),
+        testObsVal: new ObservableValue(13)
     };
 
     expect(serialize(obj)).toStrictEqual({
-        testNotObsVal: 12,
-        testObsVal: 13,
         testNotObsArr: ["one", "two", "three"],
-        testObsArr: ["four", "five", "six"]
+        testNotObsVal: 12,
+        testObsArr: ["four", "five", "six"],
+        testObsVal: 13
     });
 });
 
