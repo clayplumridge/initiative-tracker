@@ -35,7 +35,7 @@ export class ObservableValue<T> implements IObservableValue<T> {
     public set value(val: T) {
         const oldValue = this._value;
         this._value = val;
-        this.emit("change", { old: oldValue, new: this._value });
+        this.emit("change", { new: this._value, old: oldValue });
     }
 }
 
@@ -78,7 +78,7 @@ export class ObservableArray<T> implements IObservableArray<T> {
         return (...args: Parameters<F>) => {
             const old = [...this.value];
             const result = func(...args);
-            this.emit("change", { old, new: this._value });
+            this.emit("change", { new: this._value, old });
             return result;
         };
     }
@@ -103,6 +103,6 @@ export class ObservableArray<T> implements IObservableArray<T> {
     public set value(val: ReadonlyArray<T>) {
         const old = [...this.value];
         this._value = val as T[];
-        this.emit("change", { old, new: this._value });
+        this.emit("change", { new: this._value, old });
     }
 }

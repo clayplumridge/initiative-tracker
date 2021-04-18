@@ -20,10 +20,10 @@ interface EncounterData {
 
 function createActor(template: ActorTemplate): Actor {
     return {
-        template,
         actorType: template.actorType,
         id: uuidv4(),
-        name: template.name
+        name: template.name,
+        template
     };
 }
 

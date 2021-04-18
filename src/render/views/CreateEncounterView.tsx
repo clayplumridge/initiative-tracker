@@ -33,8 +33,8 @@ export const CreateEncounterView: React.FC<{}> = () => {
 
     const create = () => {
         encounterManager.createNewEncounter({
-            name: name.value,
-            actors: []
+            actors: [],
+            name: name.value
         });
 
         viewManager.onViewChanged(View.EncounterManagement);

@@ -1,6 +1,6 @@
-import { migrateToLatest } from "@/render/database/migration";
 import { DatabaseSchema, V1Schema, V2Schema } from "@/render/database/schema";
 import { DbDefaults } from "@/render/database/defaults";
+import { migrateToLatest } from "@/render/database/migration";
 
 const v1Schema: V1Schema = {
     version: 1,

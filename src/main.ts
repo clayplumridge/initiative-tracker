@@ -3,11 +3,11 @@ import isDev from "electron-is-dev";
 
 const createWindow = () => {
     let win = new BrowserWindow({
-        width: 800,
         height: 600,
         webPreferences: {
             nodeIntegration: true
-        }
+        },
+        width: 800
     });
 
     console.log(`Electron is-dev: ${isDev}`);

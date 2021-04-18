@@ -61,21 +61,21 @@ export interface PlayerActor extends ActorBase {
 type Actor = PlayerActor | NpcActor;
 
 export const FromV1: Migration<V1Schema, Schema> = {
-    oldVersion: 1,
-    newVersion: 2,
     apply: v1 => {
         const result: Schema = {
-            version: 2,
+            registry: {
+                ...v1.registry
+            },
             tables: {
                 ...v1.tables,
                 actorTemplate: [],
                 encounter: []
             },
-            registry: {
-                ...v1.registry
-            }
+            version: 2
         };
 
         return result;
-    }
+    },
+    newVersion: 2,
+    oldVersion: 1
 };

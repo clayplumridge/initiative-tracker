@@ -75,10 +75,10 @@ const EncounterViewContent: React.FC<{ encounter: Encounter }> = ({
 
     const addPlayer = () => {
         encounter.addActor({
-            name: "pc",
             actorType: ActorType.PC,
-            initiativeModifier: 1,
             id: uuidv4(),
+            initiativeModifier: 1,
+            name: "pc",
             uniqueName: true
         });
         handleClose();
@@ -86,10 +86,10 @@ const EncounterViewContent: React.FC<{ encounter: Encounter }> = ({
 
     const addNpc = () => {
         encounter.addActor({
-            name: "npc",
             actorType: ActorType.NPC,
-            initiativeModifier: 2,
             id: "test-npc",
+            initiativeModifier: 2,
+            name: "npc",
             uniqueName: false
         });
         handleClose();

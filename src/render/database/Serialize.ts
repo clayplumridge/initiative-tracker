@@ -5,12 +5,21 @@ import {
     ObservableValue
 } from "@/render/core/Observable";
 
+/**
+ * Extracts the root type of one or more nested observables
+ * Eg: ObservableArray<ObservableValue<string>> => string[]
+ * ObservableArray<string> => string[]
+ * ObservableValue<string> => string
+ */
 type UnwrappedObservableChain<T> = T extends IObservableArray<infer U>
     ? UnwrappedObservableChain<U>[]
     : T extends IObservableValue<infer U>
     ? UnwrappedObservableChain<U>
     : T;
 
+/**
+ * Unwraps all observable chains in the object for serialization purposes
+ */
 export type Serializable<T> = T extends Array<any>
     ? T
     : T extends Object

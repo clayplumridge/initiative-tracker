@@ -25,8 +25,8 @@ import { useObservable } from "@/util";
 const useStyles = makeStyles(theme =>
     createStyles({
         fab: {
-            position: "absolute",
             bottom: theme.spacing(2),
+            position: "absolute",
             right: theme.spacing(2)
         }
     })
@@ -71,12 +71,12 @@ export const EncounterManagementView: React.FC<{}> = () => {
 
 const useItemStyles = makeStyles(theme =>
     createStyles({
-        gridItemPaper: {
-            padding: theme.spacing(1),
-            color: theme.palette.text.secondary
-        },
         flexCenteredRow: {
             alignItems: "center"
+        },
+        gridItemPaper: {
+            color: theme.palette.text.secondary,
+            padding: theme.spacing(1)
         },
         menuButton: {
             marginLeft: "auto"
