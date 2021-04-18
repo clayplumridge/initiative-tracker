@@ -15,7 +15,6 @@
         "jsx": "react",
         "baseUrl": ".",
         "lib": ["ES2020", "DOM"],
-        // Allows imports in the form @/render/...
         "paths": {
             "@/*": ["src/*"]
         }
