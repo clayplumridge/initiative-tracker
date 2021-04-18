@@ -13,6 +13,7 @@ module.exports = {
     },
     resolve: {
         alias: {
+            // Allows impots in the form of @/render/... etc.
             ["@"]: path.resolve(__dirname, "src")
         },
         extensions: [".tsx", ".ts", ".js"]

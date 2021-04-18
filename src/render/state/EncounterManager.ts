@@ -1,7 +1,4 @@
-import { createSingletonGetter } from "@/util";
-import { Encounter } from "@/render/state/Encounter";
-import { Encounter as EncounterData } from "@/render/database/models";
-import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
+import { v4 } from "uuid";
 import {
     IObservableArray,
     IObservableValue,
@@ -9,7 +6,10 @@ import {
     ObservableArray,
     ObservableValue
 } from "@/render/core/Observable";
-import { v4 } from "uuid";
+import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
+import { Encounter as EncounterData } from "@/render/database/models";
+import { Encounter } from "@/render/state/Encounter";
+import { createSingletonGetter } from "@/util";
 
 class EncounterManager {
     private readonly database = getDatabaseConnection();

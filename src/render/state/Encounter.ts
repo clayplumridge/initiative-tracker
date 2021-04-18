@@ -1,14 +1,14 @@
-import { Actor, ActorTemplate } from "@/render/database/models";
-import { DatabaseObject, TableNames } from "@/render/database/schema";
-import { getRandomInt } from "@/util";
+import { v4 as uuidv4 } from "uuid";
 import {
     IReadonlyObservableArray,
     IReadonlyObservableValue,
     ObservableArray,
     ObservableValue
 } from "@/render/core/Observable";
+import { Actor, ActorTemplate } from "@/render/database/models";
+import { DatabaseObject, TableNames } from "@/render/database/schema";
 import { serialize } from "@/render/database/Serialize";
-import { v4 as uuidv4 } from "uuid";
+import { getRandomInt } from "@/util";
 
 type DatabaseEncounter = DatabaseObject<TableNames.encounter>;
 
@@ -20,10 +20,10 @@ interface EncounterData {
 
 function createActor(template: ActorTemplate): Actor {
     return {
-        template,
         actorType: template.actorType,
         id: uuidv4(),
-        name: template.name
+        name: template.name,
+        template
     };
 }
 

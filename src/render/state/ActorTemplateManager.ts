@@ -1,6 +1,6 @@
+import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
 import { ActorTemplate } from "@/render/database/models";
 import { createSingletonGetter } from "@/util";
-import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
 
 class ActorTemplateManager {
     private readonly database = getDatabaseConnection();

@@ -7,6 +7,7 @@ module.exports = {
     entry: "./src/main.ts",
     target: "electron-main",
     resolve: {
+        // Allows impots in the form of @/render/... etc.
         alias: {
             ["@"]: path.resolve(__dirname, "src")
         },

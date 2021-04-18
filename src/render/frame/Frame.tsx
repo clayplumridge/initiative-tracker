@@ -1,10 +1,5 @@
 import * as React from "react";
 import {
-    Add as AddIcon,
-    Menu as MenuIcon,
-    People as PeopleIcon
-} from "@material-ui/icons";
-import {
     AppBar,
     Box,
     createStyles,
@@ -20,23 +15,28 @@ import {
     ThemeProvider,
     Toolbar
 } from "@material-ui/core";
-import { getViewManager, View } from "@/render/state/ViewManager";
-import { IReadonlyObservableValue } from "@/render/core/Observable";
+import {
+    Add as AddIcon,
+    Menu as MenuIcon,
+    People as PeopleIcon
+} from "@material-ui/icons";
 import { Observer } from "@/render/components";
+import { IReadonlyObservableValue } from "@/render/core/Observable";
+import { getViewManager, View } from "@/render/state/ViewManager";
 import { theme } from "@/render/theme";
 import { useObservable } from "@/util";
 
 const drawerWidth = 240;
 const useStyles = makeStyles(theme =>
     createStyles({
-        root: {
-            height: "100%"
-        },
         appbar: {
             [theme.breakpoints.up("sm")]: {
-                width: `calc(100% - ${drawerWidth}px)`,
-                marginLeft: drawerWidth
+                marginLeft: drawerWidth,
+                width: `calc(100% - ${drawerWidth}px)`
             }
+        },
+        root: {
+            height: "100%"
         },
         // necessary for content to be below app bar
         toolbar: theme.mixins.toolbar
@@ -49,19 +49,26 @@ interface DrawerItemProps {
     text: string;
 }
 
+/**
+ * Rendering props for the ListItems inside the Drawer
+ */
 const DrawerItems: DrawerItemProps[] = [
     {
-        id: View.Encounter,
         icon: PeopleIcon,
+        id: View.Encounter,
         text: "Current Encounter"
     },
     {
-        id: View.EncounterManagement,
         icon: AddIcon,
+        id: View.EncounterManagement,
         text: "Encounters"
     }
 ];
 
+/**
+ * Used to override the Nav Drawer's current Selected Item for subviews
+ * Eg: CreateEncounter doesn't exist in the sidebar, so we want to show EncounterManagement as being selected instead
+ */
 const SelectedItemMap: Partial<Record<View, View>> = {
     [View.CreateEncounter]: View.EncounterManagement
 };
@@ -148,8 +155,8 @@ const useDrawerStyles = makeStyles(theme =>
     createStyles({
         drawer: {
             [theme.breakpoints.up("sm")]: {
-                width: drawerWidth,
-                flexShrink: 0
+                flexShrink: 0,
+                width: drawerWidth
             }
         },
         drawerPaper: {

@@ -1,11 +1,5 @@
 import * as React from "react";
 import {
-    Actor,
-    ActorType,
-    NpcActor,
-    PlayerActor
-} from "@/render/database/models";
-import {
     Box,
     Button,
     ClickAwayListener,
@@ -23,13 +17,19 @@ import {
     TableRow,
     TextField
 } from "@material-ui/core";
-import { Encounter } from "@/render/state/Encounter";
-import { getEncounterManager } from "@/render/state/EncounterManager";
-import { IObservableValue } from "@/render/core/Observable";
-import { IReadonlyObservableValue } from "@/render/core/Observable";
-import { Observer } from "@/render/components";
 import { Save } from "@material-ui/icons";
 import { v4 as uuidv4 } from "uuid";
+import { Observer } from "@/render/components";
+import { IObservableValue } from "@/render/core/Observable";
+import { IReadonlyObservableValue } from "@/render/core/Observable";
+import {
+    Actor,
+    ActorType,
+    NpcActor,
+    PlayerActor
+} from "@/render/database/models";
+import { Encounter } from "@/render/state/Encounter";
+import { getEncounterManager } from "@/render/state/EncounterManager";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -75,10 +75,10 @@ const EncounterViewContent: React.FC<{ encounter: Encounter }> = ({
 
     const addPlayer = () => {
         encounter.addActor({
-            name: "pc",
             actorType: ActorType.PC,
-            initiativeModifier: 1,
             id: uuidv4(),
+            initiativeModifier: 1,
+            name: "pc",
             uniqueName: true
         });
         handleClose();
@@ -86,10 +86,10 @@ const EncounterViewContent: React.FC<{ encounter: Encounter }> = ({
 
     const addNpc = () => {
         encounter.addActor({
-            name: "npc",
             actorType: ActorType.NPC,
-            initiativeModifier: 2,
             id: "test-npc",
+            initiativeModifier: 2,
+            name: "npc",
             uniqueName: false
         });
         handleClose();

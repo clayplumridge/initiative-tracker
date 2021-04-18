@@ -7,10 +7,10 @@ import {
     Typography
 } from "@material-ui/core";
 import { Cancel as CancelIcon, Save as SaveIcon } from "@material-ui/icons";
-import { css, useObservable } from "@/util";
+import { TextField } from "@/render/components";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
-import { TextField } from "@/render/components";
+import { css, useObservable } from "@/util";
 
 const useStyles = makeStyles(theme =>
     createStyles({
@@ -33,8 +33,8 @@ export const CreateEncounterView: React.FC<{}> = () => {
 
     const create = () => {
         encounterManager.createNewEncounter({
-            name: name.value,
-            actors: []
+            actors: [],
+            name: name.value
         });
 
         viewManager.onViewChanged(View.EncounterManagement);
