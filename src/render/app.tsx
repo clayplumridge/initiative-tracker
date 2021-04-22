@@ -1,6 +1,7 @@
 import * as React from "react";
 import { Frame } from "./frame/Frame";
 import { getViewManager, View } from "./state/ViewManager";
+import { ActorManagementView } from "./views/ActorManagementView";
 import { CreateEncounterView } from "./views/CreateEncounterView";
 import { EncounterManagementView } from "./views/EncounterManagementView";
 import { Observer } from "@/render/components";
@@ -28,5 +29,6 @@ export default function App() {
 const ViewMap: Record<View, React.FC<{}>> = {
     [View.Encounter]: EncounterView,
     [View.EncounterManagement]: EncounterManagementView,
-    [View.CreateEncounter]: CreateEncounterView
+    [View.CreateEncounter]: CreateEncounterView,
+    [View.ActorManagement]: ActorManagementView
 };

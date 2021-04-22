@@ -62,6 +62,11 @@ const DrawerItems: DrawerItemProps[] = [
         icon: AddIcon,
         id: View.EncounterManagement,
         text: "Encounters"
+    },
+    {
+        icon: PeopleIcon,
+        id: View.ActorManagement,
+        text: "Actors"
     }
 ];
 
