@@ -39,7 +39,9 @@ const useStyles = makeStyles(theme =>
             height: "100%"
         },
         // necessary for content to be below app bar
-        toolbar: theme.mixins.toolbar
+        toolbar: {
+            [theme.breakpoints.down("xs")]: { ...theme.mixins.toolbar }
+        }
     })
 );
 
@@ -88,9 +90,9 @@ export const Frame: React.FC<{}> = ({ children }) => {
             <Box className={styles.root} display="flex">
                 <CssBaseline />
 
-                <AppBar className={styles.appbar} position="fixed">
-                    <Toolbar>
-                        <Hidden smUp implementation="css">
+                <Hidden smUp implementation="css">
+                    <AppBar className={styles.appbar} position="fixed">
+                        <Toolbar>
                             <IconButton
                                 onClick={() =>
                                     setMobileIsOpen(!mobileIsOpen.value)
@@ -98,9 +100,9 @@ export const Frame: React.FC<{}> = ({ children }) => {
                             >
                                 <MenuIcon />
                             </IconButton>
-                        </Hidden>
-                    </Toolbar>
-                </AppBar>
+                        </Toolbar>
+                    </AppBar>
+                </Hidden>
 
                 <ResponsiveDrawer
                     mobileOnClose={() => setMobileIsOpen(!mobileIsOpen.value)}
