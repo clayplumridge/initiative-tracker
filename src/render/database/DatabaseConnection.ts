@@ -9,7 +9,7 @@ import {
     Schema,
     TableNames
 } from "@/render/database/schema";
-import { createSingletonGetter } from "@/util";
+import { createSingletonGetter, PartialShallow } from "@/util";
 
 type TableKey = keyof Schema["tables"];
 type RegistryKey = keyof Schema["registry"];
@@ -67,8 +67,8 @@ class DatabaseConnection {
             .value();
     }
 
-    public getEncounters(): Encounter[] {
-        return [...this.table(TableNames.encounter).value()];
+    public getEncounters(filter?: PartialShallow<Encounter>): Encounter[] {
+        return [...this.table(TableNames.encounter).filter(filter).value()];
     }
 
     public removeEncounter(encounterId: string): void {
@@ -79,6 +79,10 @@ class DatabaseConnection {
         this.table(TableNames.actorTemplate)
             .push({ ...actorTemplate })
             .write();
+    }
+
+    public deleteActorTemplate(templateId: string): void {
+        this.table(TableNames.actorTemplate).remove({ id: templateId }).write();
     }
 
     public updateActorTemplate(actorTemplate: ActorTemplate): void {
@@ -96,8 +100,10 @@ class DatabaseConnection {
             .value();
     }
 
-    public getActorTemplates(): ActorTemplate[] {
-        return [...this.table(TableNames.actorTemplate).value()];
+    public getActorTemplates(
+        filter?: PartialShallow<ActorTemplate>
+    ): ActorTemplate[] {
+        return [...this.table(TableNames.actorTemplate).filter(filter).value()];
     }
 
     public getCurrentEncounterId(): string | undefined {

@@ -1,32 +1,25 @@
+import {
+    IReadonlyObservableArray,
+    ObservableArray
+} from "@/render/core/Observable";
 import { getDatabaseConnection } from "@/render/database/DatabaseConnection";
 import { ActorTemplate } from "@/render/database/models";
-import { createSingletonGetter } from "@/util";
+import { createSingletonGetter, PartialShallow } from "@/util";
+
+export type Filter = PartialShallow<ActorTemplate>;
 
 class ActorTemplateManager {
     private readonly database = getDatabaseConnection();
+    private readonly templates = new ObservableArray<ActorTemplate>([]);
 
-    public addActorTemplate(actorTemplate: ActorTemplate): void {
-        this.database.addActorTemplate(actorTemplate);
+    public delete(id: string) {
+        this.database.deleteActorTemplate(id);
+        this.templates.value = this.templates.value.filter(x => x.id != id);
     }
 
-    public updateActorTemplate(actorTemplate: ActorTemplate): void {
-        this.database.updateActorTemplate(actorTemplate);
-    }
-
-    public getActorTemplate(
-        actorTemplateId: string
-    ): ActorTemplate | undefined {
-        return this.database.getActorTemplate(actorTemplateId);
-    }
-
-    public getActorTemplates(): Map<String, String> {
-        const actorTemplates: Map<String, String> = new Map<String, String>();
-        this.database
-            .getActorTemplates()
-            .map((actorTemplate: ActorTemplate) =>
-                actorTemplates.set(actorTemplate.name, actorTemplate.id)
-            );
-        return actorTemplates;
+    public search(filter?: Filter): IReadonlyObservableArray<ActorTemplate> {
+        this.templates.value = this.database.getActorTemplates(filter);
+        return this.templates;
     }
 }
 

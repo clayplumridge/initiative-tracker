@@ -3,7 +3,9 @@ import {
     DatabaseSchema,
     Schema as LatestSchema
 } from "@/render/database/schema";
+/* eslint-disable no-restricted-imports */
 import { FromV1 as V1toV2 } from "@/render/database/schema/V2";
+/* eslint-enable no-restricted-imports */
 
 export interface Migration<
     OldSchema extends DatabaseSchema,

@@ -62,3 +62,7 @@ export function css(...items: Array<string | undefined>) {
 function isDefined<T>(obj: T | undefined): obj is T {
     return obj != undefined;
 }
+
+export type PartialShallow<T> = {
+    [P in keyof T]?: T[P] extends object ? object : T[P];
+};

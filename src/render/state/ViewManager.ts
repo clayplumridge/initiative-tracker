@@ -27,7 +27,8 @@ class ViewManager {
 export const enum View {
     Encounter = 0,
     EncounterManagement = 1,
-    CreateEncounter = 2
+    CreateEncounter = 2,
+    ActorManagement = 3
 }
 
 export const getViewManager = createSingletonGetter(ViewManager);
