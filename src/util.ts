@@ -1,5 +1,9 @@
 import * as React from "react";
 import {
+    IReadonlyObservableArray,
+    ObservableArray
+} from "./render/core/Observable";
+import {
     IReadonlyObservableValue,
     ObservableValue
 } from "./render/core/Observable";
@@ -44,6 +48,17 @@ export function useObservable<T>(
     initialValue: T
 ): [IReadonlyObservableValue<T>, (newValue: T) => void] {
     const [val] = React.useState(new ObservableValue<T>(initialValue));
+    return [val, newValue => (val.value = newValue)];
+}
+
+/**
+ * React Hook that mimics React.useState but uses an Observable instead
+ * Use for any UI-local Observables that you need
+ */
+export function useObservableArray<T>(
+    initialValue: T[]
+): [IReadonlyObservableArray<T>, (newValue: T[]) => void] {
+    const [val] = React.useState(new ObservableArray<T>(initialValue));
     return [val, newValue => (val.value = newValue)];
 }
 
