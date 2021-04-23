@@ -23,7 +23,11 @@
         "no-restricted-imports": [
             "error",
             {
-                "patterns": ["../*", "@/render/components/*"]
+                "patterns": [
+                    "../*",
+                    "@/render/components/*",
+                    "@/render/database/schema/*"
+                ]
             }
         ],
         "no-duplicate-imports": "error",

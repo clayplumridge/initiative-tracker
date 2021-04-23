@@ -9,7 +9,7 @@ import {
     Schema,
     TableNames
 } from "@/render/database/schema";
-import { createSingletonGetter } from "@/util";
+import { createSingletonGetter, PartialShallow } from "@/util";
 
 type TableKey = keyof Schema["tables"];
 type RegistryKey = keyof Schema["registry"];
@@ -96,8 +96,10 @@ class DatabaseConnection {
             .value();
     }
 
-    public getActorTemplates(): ActorTemplate[] {
-        return [...this.table(TableNames.actorTemplate).value()];
+    public getActorTemplates(
+        filter?: PartialShallow<ActorTemplate>
+    ): ActorTemplate[] {
+        return [...this.table(TableNames.actorTemplate).filter(filter).value()];
     }
 
     public getCurrentEncounterId(): string | undefined {

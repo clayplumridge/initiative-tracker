@@ -4,10 +4,16 @@ import {
     BottomNavigationAction,
     Box,
     createStyles,
+    Grid,
     makeStyles
 } from "@material-ui/core";
 import { Restore as RestoreIcon } from "@material-ui/icons";
 import { Observer, Switcher } from "@/render/components";
+import { ActorType } from "@/render/database/models";
+import {
+    Filter,
+    getActorTemplateManager
+} from "@/render/state/ActorTemplateManager";
 import { useObservable } from "@/util";
 
 const enum Tab {
@@ -28,9 +34,22 @@ const useViewStyles = makeStyles(theme =>
     })
 );
 
+const ActorTemplateDisplay: React.FC<{ filter: Filter }> = ({ filter }) => {
+    const manager = getActorTemplateManager();
+    const templates = manager.getActors(filter);
+
+    return (
+        <Grid container>
+            {templates.map(x => (
+                <div>{x.name}</div>
+            ))}
+        </Grid>
+    );
+};
+
 const viewMap: Record<Tab, React.ReactNode> = {
-    [Tab.PCs]: undefined,
-    [Tab.NPCs]: undefined
+    [Tab.PCs]: <ActorTemplateDisplay filter={{ actorType: ActorType.PC }} />,
+    [Tab.NPCs]: <ActorTemplateDisplay filter={{ actorType: ActorType.NPC }} />
 };
 
 export const ActorManagementView: React.FC<{}> = () => {

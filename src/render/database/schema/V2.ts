@@ -1,7 +1,6 @@
 import { DatabaseSchema, V1Schema } from ".";
 import { Migration } from "@/render/database/migration";
 
-
 export const enum TableNames {
     actorTemplate = "actorTemplate",
     encounter = "encounter"
