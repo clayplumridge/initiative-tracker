@@ -67,8 +67,8 @@ class DatabaseConnection {
             .value();
     }
 
-    public getEncounters(): Encounter[] {
-        return [...this.table(TableNames.encounter).value()];
+    public getEncounters(filter?: PartialShallow<Encounter>): Encounter[] {
+        return [...this.table(TableNames.encounter).filter(filter).value()];
     }
 
     public removeEncounter(encounterId: string): void {
@@ -79,6 +79,10 @@ class DatabaseConnection {
         this.table(TableNames.actorTemplate)
             .push({ ...actorTemplate })
             .write();
+    }
+
+    public deleteActorTemplate(templateId: string): void {
+        this.table(TableNames.actorTemplate).remove({ id: templateId }).write();
     }
 
     public updateActorTemplate(actorTemplate: ActorTemplate): void {
