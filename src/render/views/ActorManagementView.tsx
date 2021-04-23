@@ -134,7 +134,7 @@ export const ActorManagementView: React.FC<{}> = () => {
 
     return (
         <Box className={styles.body} display="flex" flexDirection="column">
-            <Switcher map={viewMap} switchOn={selectedTab} />
+            <Switcher switchOn={selectedTab} viewMap={viewMap} />
 
             <Observer observed={{ selectedTab }}>
                 {({ selectedTab }) => (

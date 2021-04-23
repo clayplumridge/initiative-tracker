@@ -3,12 +3,12 @@ import { Observer } from ".";
 import { IObservableValue } from "@/render/core/Observable";
 
 export interface SwitcherProps<T extends string | number> {
-    map: Record<T, React.ReactNode>;
+    viewMap: Record<T, React.ReactNode>;
     switchOn: IObservableValue<T>;
 }
 
 export function Switcher<T extends string | number>({
-    map,
+    viewMap: map,
     switchOn
 }: SwitcherProps<T>) {
     return (
