@@ -8,12 +8,12 @@ export interface SwitcherProps<T extends string | number> {
 }
 
 export function Switcher<T extends string | number>({
-    viewMap: map,
+    viewMap,
     switchOn
 }: SwitcherProps<T>) {
     return (
         <Observer observed={{ switchOn }}>
-            {({ switchOn }) => map[switchOn]}
+            {({ switchOn }) => viewMap[switchOn]}
         </Observer>
     );
 }
