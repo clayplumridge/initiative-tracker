@@ -28,7 +28,8 @@ export const enum View {
     Encounter = 0,
     EncounterManagement = 1,
     CreateEncounter = 2,
-    ActorManagement = 3
+    ActorTemplateManagement = 3,
+    CreateActorTemplate = 4
 }
 
 export const getViewManager = createSingletonGetter(ViewManager);

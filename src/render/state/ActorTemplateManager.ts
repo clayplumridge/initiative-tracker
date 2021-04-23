@@ -1,3 +1,5 @@
+import { v4 as uuidv4 } from "uuid";
+import { getViewManager, View } from "./ViewManager";
 import {
     IReadonlyObservableArray,
     ObservableArray
@@ -11,6 +13,11 @@ export type Filter = PartialShallow<ActorTemplate>;
 class ActorTemplateManager {
     private readonly database = getDatabaseConnection();
     private readonly templates = new ObservableArray<ActorTemplate>([]);
+
+    public create(template: Omit<ActorTemplate, "id">) {
+        this.database.addActorTemplate({ ...template, id: uuidv4() });
+        getViewManager().onViewChanged(View.ActorTemplateManagement);
+    }
 
     public delete(id: string) {
         this.database.deleteActorTemplate(id);
