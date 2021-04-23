@@ -20,8 +20,10 @@ import {
 import { Save } from "@material-ui/icons";
 import { v4 as uuidv4 } from "uuid";
 import { Observer } from "@/render/components";
-import { IObservableValue } from "@/render/core/Observable";
-import { IReadonlyObservableValue } from "@/render/core/Observable";
+import {
+    IObservableValue,
+    IReadonlyObservableValue
+} from "@/render/core/Observable";
 import {
     Actor,
     ActorType,
