@@ -4,6 +4,7 @@ import {
     BottomNavigationAction,
     Box,
     createStyles,
+    Fab,
     Grid,
     IconButton,
     ListItemIcon,
@@ -13,6 +14,7 @@ import {
     Typography
 } from "@material-ui/core";
 import {
+    Add as AddIcon,
     Delete as DeleteIcon,
     MoreVert as MoreVertIcon,
     Restore as RestoreIcon
@@ -23,6 +25,7 @@ import {
     Filter,
     getActorTemplateManager
 } from "@/render/state/ActorTemplateManager";
+import { getViewManager, View } from "@/render/state/ViewManager";
 import { useObservable } from "@/util";
 
 const enum Tab {
@@ -35,7 +38,7 @@ const ActorTemplateDisplay: React.FC<{ filter: Filter }> = ({ filter }) => {
     const templates = manager.search(filter);
 
     return (
-        <Grid container>
+        <Grid container spacing={1}>
             <Observer observed={{ templates }}>
                 {({ templates }) =>
                     templates.map(x => (
@@ -124,11 +127,17 @@ const useViewStyles = makeStyles(theme =>
             margin: `auto -${theme.spacing(1)}px -${theme.spacing(
                 1
             )}px -${theme.spacing(1)}px`
+        },
+        fab: {
+            bottom: theme.spacing(2),
+            position: "absolute",
+            right: theme.spacing(2)
         }
     })
 );
 
-export const ActorManagementView: React.FC<{}> = () => {
+export const ActorTemplateManagementView: React.FC<{}> = () => {
+    const viewManager = getViewManager();
     const styles = useViewStyles();
     const [selectedTab, setSelectedTab] = useObservable(Tab.NPCs);
 
@@ -157,6 +166,16 @@ export const ActorManagementView: React.FC<{}> = () => {
                     </BottomNavigation>
                 )}
             </Observer>
+
+            <Fab
+                className={styles.fab}
+                color="primary"
+                onClick={() =>
+                    viewManager.onViewChanged(View.CreateActorTemplate)
+                }
+            >
+                <AddIcon />
+            </Fab>
         </Box>
     );
 };

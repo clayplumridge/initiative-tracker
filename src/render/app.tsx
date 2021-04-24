@@ -1,11 +1,14 @@
 import * as React from "react";
-import { Frame } from "./frame/Frame";
-import { getViewManager, View } from "./state/ViewManager";
-import { ActorManagementView } from "./views/ActorManagementView";
-import { CreateEncounterView } from "./views/CreateEncounterView";
-import { EncounterManagementView } from "./views/EncounterManagementView";
 import { Observer } from "@/render/components";
-import { EncounterView } from "@/render/views/EncounterView";
+import { Frame } from "@/render/frame/Frame";
+import { getViewManager, View } from "@/render/state/ViewManager";
+import {
+    ActorTemplateManagementView,
+    CreateActorTemplateView,
+    CreateEncounterView,
+    EncounterManagementView,
+    EncounterView
+} from "@/render/views";
 
 export default function App() {
     const viewManager = getViewManager();
@@ -30,5 +33,6 @@ const ViewMap: Record<View, React.FC<{}>> = {
     [View.Encounter]: EncounterView,
     [View.EncounterManagement]: EncounterManagementView,
     [View.CreateEncounter]: CreateEncounterView,
-    [View.ActorManagement]: ActorManagementView
+    [View.ActorTemplateManagement]: ActorTemplateManagementView,
+    [View.CreateActorTemplate]: CreateActorTemplateView
 };

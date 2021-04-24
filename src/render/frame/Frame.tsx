@@ -67,7 +67,7 @@ const DrawerItems: DrawerItemProps[] = [
     },
     {
         icon: PeopleIcon,
-        id: View.ActorManagement,
+        id: View.ActorTemplateManagement,
         text: "Actors"
     }
 ];
@@ -77,7 +77,8 @@ const DrawerItems: DrawerItemProps[] = [
  * Eg: CreateEncounter doesn't exist in the sidebar, so we want to show EncounterManagement as being selected instead
  */
 const SelectedItemMap: Partial<Record<View, View>> = {
-    [View.CreateEncounter]: View.EncounterManagement
+    [View.CreateEncounter]: View.EncounterManagement,
+    [View.CreateActorTemplate]: View.ActorTemplateManagement
 };
 
 export const Frame: React.FC<{}> = ({ children }) => {
