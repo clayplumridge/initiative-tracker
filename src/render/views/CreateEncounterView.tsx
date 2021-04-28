@@ -8,36 +8,31 @@ import {
 } from "@material-ui/core";
 import {
     Cancel as CancelIcon,
-    Save as SaveIcon,
-    PersonAdd as PersonAddIcon
+    PersonAdd as PersonAddIcon,
+    Save as SaveIcon
 } from "@material-ui/icons";
+import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 import { Observer, TextField } from "@/render/components";
+import { Actor } from "@/render/database/models";
 import { getEncounterManager } from "@/render/state/EncounterManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
 import { css, useObservable, useObservableArray } from "@/util";
-import { Actor } from "../database/models";
-import { ActorType, PlayerActor } from "../database/schema/V2";
-import { SpeedDial, SpeedDialAction, SpeedDialIcon } from "@material-ui/lab";
 
 const useStyles = makeStyles(theme =>
     createStyles({
         buttonRow: {
             marginTop: theme.spacing(1)
         },
+        fab: {
+            bottom: theme.spacing(2),
+            position: "absolute",
+            right: theme.spacing(2)
+        },
         firstButton: {
             marginLeft: "auto"
         },
         notLastButton: {
             marginRight: theme.spacing(1)
-        },
-        leftButton: {
-            marginTop: theme.spacing(1),
-            marginLeft: "auto"
-        },
-        fab: {
-            bottom: theme.spacing(2),
-            position: "absolute",
-            right: theme.spacing(2)
         }
     })
 );
@@ -49,12 +44,31 @@ export const CreateEncounterView: React.FC<{}> = () => {
     const [actors, setActors] = useObservableArray<Actor>([]);
     const [speedDialOpen, setSpeedDialOpen] = useObservable(false);
     const styles = useStyles();
-    const speedDialActions = [
-        { icon: <PersonAddIcon />, name: "Add NPC" },
-        { icon: <PersonAddIcon />, name: "Add NPC From Template" },
-        { icon: <PersonAddIcon />, name: "Add Player Character" },
-        { icon: <PersonAddIcon />, name: "Add All Player Characters" }
-    ];
+    const speedDialActions = React.useMemo(
+        () => [
+            {
+                icon: <PersonAddIcon />,
+                name: "Add NPC",
+                onClick: () => addNonPlayerCharacter()
+            },
+            {
+                icon: <PersonAddIcon />,
+                name: "Add NPC From Template",
+                onClick: () => addNonPlayerCharacterFromTemplate()
+            },
+            {
+                icon: <PersonAddIcon />,
+                name: "Add Player Character",
+                onClick: () => addPlayerCharacter()
+            },
+            {
+                icon: <PersonAddIcon />,
+                name: "Add All Player Characters",
+                onClick: () => addPlayerCharacters()
+            }
+        ],
+        undefined
+    );
 
     const create = () => {
         encounterManager.createNewEncounter({
@@ -66,6 +80,7 @@ export const CreateEncounterView: React.FC<{}> = () => {
     };
 
     const addPlayerCharacters = () => {
+        setSpeedDialOpen(false);
         // setActors([
         //     {
         //         actorType: ActorType.PC,
@@ -77,17 +92,23 @@ export const CreateEncounterView: React.FC<{}> = () => {
         // ]);
         //actors.concat(db.getActors(playercharacters));
     };
-
-    const cancel = () => {
-        viewManager.onViewChanged(View.EncounterManagement);
-    };
-
-    const handleSpeedDialClose = () => {
+    const addPlayerCharacter = () => {
+        // open selector for player character
         setSpeedDialOpen(false);
     };
 
-    const handleSpeedDialOpen = () => {
-        setSpeedDialOpen(true);
+    const addNonPlayerCharacterFromTemplate = () => {
+        // open selector for NPC template
+        setSpeedDialOpen(false);
+    };
+
+    const addNonPlayerCharacter = () => {
+        setSpeedDialOpen(false);
+        // Create NPC Screen?
+    };
+
+    const cancel = () => {
+        viewManager.onViewChanged(View.EncounterManagement);
     };
 
     return (
@@ -126,22 +147,25 @@ export const CreateEncounterView: React.FC<{}> = () => {
                 {({ speedDialOpen }) => {
                     return (
                         <SpeedDial
+                            ariaLabel="Add Character"
                             className={styles.fab}
                             color="primary"
-                            ariaLabel="Add Character"
-                            onClick={() => console.log("hello")}
-                            onOpen={handleSpeedDialOpen}
-                            onClose={handleSpeedDialClose}
-                            open={speedDialOpen}
-                            icon={<SpeedDialIcon />}
                             direction="left"
+                            icon={<SpeedDialIcon />}
+                            onClose={() => {
+                                setSpeedDialOpen(false);
+                            }}
+                            onOpen={() => {
+                                setSpeedDialOpen(true);
+                            }}
+                            open={speedDialOpen}
                         >
-                            {speedDialActions.map(action => (
+                            {speedDialActions.map(speedDialAction => (
                                 <SpeedDialAction
-                                    key={action.name}
-                                    icon={action.icon}
-                                    tooltipTitle={action.name}
-                                    onClick={handleSpeedDialClose}
+                                    icon={speedDialAction.icon}
+                                    key={speedDialAction.name}
+                                    onClick={speedDialAction.onClick}
+                                    tooltipTitle={speedDialAction.name}
                                 />
                             ))}
                         </SpeedDial>
