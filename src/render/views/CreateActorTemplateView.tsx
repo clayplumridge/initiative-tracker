@@ -31,15 +31,6 @@ const useStyles = makeStyles(theme =>
     })
 );
 
-function toDisplayName(actorType: ActorType) {
-    switch (actorType) {
-        case ActorType.NPC:
-            return "NPC";
-        case ActorType.PC:
-            return "PC";
-    }
-}
-
 export const CreateActorTemplateView: React.FC<{}> = () => {
     const styles = useStyles();
     const [name, setName] = useObservable("");
@@ -86,12 +77,8 @@ export const CreateActorTemplateView: React.FC<{}> = () => {
                 onChange={ev => setActorType(ev.target.value as ActorType)}
                 value={actorType}
             >
-                <MenuItem value={ActorType.NPC}>
-                    {toDisplayName(ActorType.NPC)}
-                </MenuItem>
-                <MenuItem value={ActorType.PC}>
-                    {toDisplayName(ActorType.PC)}
-                </MenuItem>
+                <MenuItem value={ActorType.NPC}>NPC</MenuItem>
+                <MenuItem value={ActorType.PC}>PC</MenuItem>
             </Select>
 
             <Box
