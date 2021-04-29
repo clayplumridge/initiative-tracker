@@ -1,10 +1,8 @@
 import * as React from "react";
 import {
     IReadonlyObservableArray,
-    ObservableArray
-} from "./render/core/Observable";
-import {
     IReadonlyObservableValue,
+    ObservableArray,
     ObservableValue
 } from "./render/core/Observable";
 
