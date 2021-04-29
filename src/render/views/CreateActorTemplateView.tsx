@@ -5,13 +5,15 @@ import {
     createStyles,
     FormControlLabel,
     makeStyles,
+    MenuItem,
     Typography
 } from "@material-ui/core";
 import { Cancel as CancelIcon, Save as SaveIcon } from "@material-ui/icons";
-import { Checkbox, TextField } from "@/render/components";
+import { Checkbox, Select, TextField } from "@/render/components";
 import { ActorType } from "@/render/database/schema";
 import { getActorTemplateManager } from "@/render/state/ActorTemplateManager";
 import { getViewManager, View } from "@/render/state/ViewManager";
+import { Mixins } from "@/styles";
 import { css, useObservable } from "@/util";
 
 const useStyles = makeStyles(theme =>
@@ -19,6 +21,7 @@ const useStyles = makeStyles(theme =>
         buttonRow: {
             marginTop: theme.spacing(1)
         },
+        container: Mixins.rhythm(theme, 1, "column"),
         firstButton: {
             marginLeft: "auto"
         },
@@ -27,6 +30,15 @@ const useStyles = makeStyles(theme =>
         }
     })
 );
+
+function toDisplayName(actorType: ActorType) {
+    switch (actorType) {
+        case ActorType.NPC:
+            return "NPC";
+        case ActorType.PC:
+            return "PC";
+    }
+}
 
 export const CreateActorTemplateView: React.FC<{}> = () => {
     const styles = useStyles();
@@ -45,7 +57,7 @@ export const CreateActorTemplateView: React.FC<{}> = () => {
     };
 
     return (
-        <Box display="flex" flexDirection="column">
+        <Box className={styles.container} display="flex" flexDirection="column">
             <TextField
                 label="Name"
                 onChange={newValue => setName(newValue)}
@@ -68,6 +80,19 @@ export const CreateActorTemplateView: React.FC<{}> = () => {
                 type="number"
                 value={initiativeModifier}
             />
+
+            <Select
+                label="Actor Type"
+                onChange={ev => setActorType(ev.target.value as ActorType)}
+                value={actorType}
+            >
+                <MenuItem value={ActorType.NPC}>
+                    {toDisplayName(ActorType.NPC)}
+                </MenuItem>
+                <MenuItem value={ActorType.PC}>
+                    {toDisplayName(ActorType.PC)}
+                </MenuItem>
+            </Select>
 
             <Box
                 className={styles.buttonRow}
